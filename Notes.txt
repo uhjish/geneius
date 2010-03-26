@@ -1,0 +1,7 @@
+Use geneius.py from the web
+
+search for refseqid's:
+       geneius.py?action=search&organism=homo&qsymbol=tp53
+       
+to get refseq info:
+       geneius.py?action=lookup&refseq_ids=["NM_1","NM_2","NM_N"]

@@ -88,23 +88,8 @@ def lookup_refseq(symbols,geneius_db):
             "num_exons":entry[8],
             "exons":[new_exon],
             }
-        #if entry[3] == "+":
-        #    new_mapping["utr5_start"]= entry[4]
-        #    new_mapping["utr5_end"]=entry[6]
-        #    new_mapping["utr3_start"]=entry[7]
-        #    new_mapping["utr3_end"]= entry[5]
-        #else:
-        #    new_mapping["utr5_start"]=entry[7]
-        #    new_mapping["utr5_end"]=entry[5]
-        #    new_mapping["utr3_start"]=entry[4]
-        #    new_mapping["utr3_end"]= entry[6]
-
 
         if entry[0] == map_id:
-            #if entry[8] == entry[10] and entry[3] == "+":
-            #    new_exon["end"] = entry[7]
-            #elif int(entry[10]) == 1 and entry[3] == "-":
-            #    new_exon["end"] = entry[7]
             results[-1]["mappings"][-1]["exons"].append(new_exon)
 
         elif entry[1] == mref:
@@ -113,8 +98,6 @@ def lookup_refseq(symbols,geneius_db):
         else:
             map_id = entry[0]
             mref = entry[1]
-            #move exon start to cds start for first exon
-            #new_mapping["exons"][0]["start"] = entry[6]
             results.append({
                     "refseq_id":entry[1],
                     "mappings":[new_mapping]
