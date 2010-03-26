@@ -138,9 +138,26 @@ def search_for_refseq(qsymbol,organism,geneius_db):
                     "species":entry[7],
                     })
             last_eid = entry[0]
+
+
+    #filter results
+    best = []
+    good = []
+    ok = []
+    for result in results:
+        if result['official_symbol'].lower() == qsymbol.lower():
+            best.append(result)
+        elif qsymbol.lower() in [i.lower() for i in result['other_symbols'].split("|")]:
+            good.append(result)
+        else:
+            ok.append(result)
     
+    if len(best)>0:
+        return best
+    elif len(good)>0:
+        return good
     
-    return results
+    return ok
 
 
 return_obj = ReturnObj()
