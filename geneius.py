@@ -1,4 +1,4 @@
-#!/usr/bin/env python -W ignore::DeprecationWarning
+#!/usr/bin/python2.6 -W ignore::DeprecationWarning
 
 from gsettings import settings
 

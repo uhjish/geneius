@@ -23,7 +23,7 @@ create table tbl_refExon(
 	exon_start int,
 	exon_end int);
 
-load data local infile "refMain2" into table tbl_refMain;
-load data local infile "refExon2" into table tbl_refExon;
+load data local infile "refMain.txt" into table tbl_refMain;
+load data local infile "refExons.txt" into table tbl_refExon;
 
 
