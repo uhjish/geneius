@@ -1,4 +1,4 @@
-#!/usr/bin/python2.6 -W ignore::DeprecationWarning
+#!/usr/bin/env python2.6
 
 from gsettings import settings
 
@@ -6,7 +6,7 @@ import sys
 import cgi
 import MySQLdb
 import json
-
+import warnings
 if settings.DEBUG:
     import cgitb
     cgitb.enable()
@@ -159,6 +159,7 @@ def search_for_refseq(qsymbol,organism,geneius_db):
     
     return ok
 
+warnings.simplefilter('ignore',DeprecationWarning)
 
 return_obj = ReturnObj()
 geneius_db = GeneiusDb(return_obj)
