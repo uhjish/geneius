@@ -59,6 +59,48 @@ def get_required_var(var,form,return_obj):
     return form.getvalue(var)
 
 
+def whereami_flank(org, chr, pos, direction, geneius_db):
+    
+    flank_limit = 100
+    
+    if direction == "left":
+        cmp = " < "
+        ord = " DESC "
+        cmp_to = " main.end "
+        entry_cmp = 5
+    else:
+        cmp = " > "
+        ord = " ASC "
+        cmp_to = " main.start "
+        entry_cmp = 4
+
+    query_pos = "main.chr=\""+chr+"\" and "+cmp_to+cmp+pos+" "
+    
+    query = "select distinct main.* from tbl_refMain as main "
+    query += "inner join tbl_gene_refseq as gref on gref.refseq_rna=main.refseq_id "
+    query += "inner join tbl_entrez_xref as entrez on gref.entrez_id=entrez.entrez_id "
+    query += "inner join tbl_species as species on entrez.species=species.tax_id "
+    query += "where species.name like \"%"+org+"%\" and "
+    query += query_pos+" order by "+cmp_to+ord+" LIMIT "+str(flank_limit)
+
+    flank=[]
+    closest = -1 
+    for entry in geneius_db.query(query):
+        if closest != -1 and entry[entry_cmp] != closest:
+            break
+        closest=entry[entry_cmp]
+        feature = {
+                "chr":entry[2],
+                "start":entry[4],
+                "end":entry[5],
+                "strand":entry[3],
+                "refseq_id":entry[1],
+                "type":"transcript",
+                "distance":int(entry[entry_cmp])-int(pos)
+                }
+        flank.append(feature)
+    return flank
+
 def whereami_inside(org, chr, pos, geneius_db):
 
     query_pos = "main.chr=\""+chr+"\" and main.start <= "+pos+" and main.end >="+pos
@@ -105,7 +147,8 @@ def whereami_inside(org, chr, pos, geneius_db):
 def whereami(organism,chr,pos,geneius_db):
     results= {
             "inside":whereami_inside(organism,chr,pos,geneius_db),
-            "left":"blah"
+            "left":whereami_flank(organism,chr,pos,"left",geneius_db),
+            "right":whereami_flank(organism,chr,pos,"right",geneius_db),
             }
     return results #lookup_refseq("TP53",geneius_db)
 
