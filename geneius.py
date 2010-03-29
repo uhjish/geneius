@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.6
 
 from gsettings import settings
 
@@ -58,6 +58,56 @@ def get_required_var(var,form,return_obj):
         returnobj_error(return_obj,"missing variable %s" % var)
     return form.getvalue(var)
 
+
+def whereami_inside(org, chr, pos, geneius_db):
+
+    query_pos = "main.chr=\""+chr+"\" and main.start <= "+pos+" and main.end >="+pos
+    query = "select main.*,exon.* from tbl_refMain as main inner join "
+    query += "tbl_refExon as exon on exon.ref_id=main.id "
+    query += "inner join tbl_gene_refseq_new as gref on gref.refseq_rna=main.refseq_id "
+    query += "inner join tbl_entrez_xref as entrez on gref.entrez_id=entrez.entrez_id "
+    query += "inner join tbl_species as species on entrez.species=species.tax_id "
+    query += "where species.name like \"%"+org+"%\" and "
+    query += " %s order by main.refseq_id,main.id,exon_start ;" % query_pos
+
+    last_exon_end=-1
+    last_exon_num=-1
+
+    inside=[]
+    pos = int(pos)
+    for entry in geneius_db.query(query):
+        if entry[11] <= pos and entry[12] >=pos:
+            inside_exon = {
+                "chr":entry[2],
+                "start":entry[11],
+                "end":entry[12],
+                "strand":entry[3],
+                "refseq_id":entry[1],
+                "type":"exon",
+                "exon_num":entry[10]
+                }
+            inside.append(inside_exon)
+        if last_exon_end != -1 and last_exon_end <= pos and entry[12] >=pos:
+            inside_intron = {
+                "chr":entry[2],
+                "start":entry[11],
+                "end":entry[12],
+                "strand":entry[3],
+                "refseq_id":entry[1],
+                "type":"intron",
+                "flank_exons":[last_exon_num,entry[10]]
+                }
+            inside.append(inside_intron)
+        last_exon_end = entry[12]
+        last_exon_num = entry[10]
+    return inside
+
+def whereami(organism,chr,pos,geneius_db):
+    results= {
+            "inside":whereami_inside(organism,chr,pos,geneius_db),
+            "left":"blah"
+            }
+    return results #lookup_refseq("TP53",geneius_db)
 
 def lookup_refseq(symbols,geneius_db):
 
@@ -166,7 +216,7 @@ geneius_db = GeneiusDb(return_obj)
 
 form = cgi.FieldStorage()
 action = get_required_var("action",form,return_obj)
-allowable_actions = ["search","lookup"]
+allowable_actions = ["search","lookup","whereami"]
 if not action in allowable_actions:
     returnobj_error(return_obj,"action must be of %s" % allowable_actions)
 
@@ -190,6 +240,17 @@ elif action=="lookup":
     except MySQLdb.ProgrammingError, pe:
         returnobj_error(return_obj,str(pe))
         
+    return_obj.results = dbresults
+elif action=="whereami":
+    organism=get_required_var("organism",form,return_obj)
+    chr=get_required_var("chr",form,return_obj)
+    pos=get_required_var("pos",form,return_obj)
+    try:
+        #dbresults = search_for_refseq("TP53","sapiens",geneius_db)
+        #dbresults = lookup_refseq(refids,geneius_db)
+        dbresults = whereami(organism, chr, pos, geneius_db)
+    except MySQLdb.ProgrammingError, pe:
+        returnobj_error(return_obj,str(pe))
     return_obj.results = dbresults
 
 print_return(return_obj)
