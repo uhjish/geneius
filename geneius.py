@@ -1,11 +1,11 @@
-#!/usr/bin/env python2.6
+#!/usr/bin/env python
 
 from gsettings import settings
 
 import sys
 import cgi
 import MySQLdb
-import json
+import simplejson as json
 import warnings
 if settings.DEBUG:
     import cgitb
@@ -33,7 +33,7 @@ class GeneiusDb:
                                  user=settings.DB_USER,
                                  passwd=settings.DB_PASSWORD,
                                  db = settings.DB_DATABASE)
-        except MySQLdb.OperationalError as oe:
+        except MySQLdb.OperationalError, oe:
             self.return_obj.error = str(oe)
             print_return(self.return_obj)
 
@@ -175,7 +175,7 @@ if action == "search":
     organism = get_required_var("organism",form,return_obj)
     try:
         dbresults = search_for_refseq(qsymbol,organism,geneius_db)
-    except MySQLdb.ProgrammingError as pe:
+    except MySQLdb.ProgrammingError, pe:
         returnobj_error(return_obj,str(pe))
    
     return_obj.results = dbresults
@@ -187,7 +187,7 @@ elif action=="lookup":
         returnobj_error(return_obj,"problem decoding refseq_ids should be json array")
     try:
         dbresults = lookup_refseq(refids,geneius_db)
-    except MySQLdb.ProgrammingError as pe:
+    except MySQLdb.ProgrammingError, pe:
         returnobj_error(return_obj,str(pe))
         
     return_obj.results = dbresults
