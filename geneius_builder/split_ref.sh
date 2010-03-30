@@ -3,18 +3,22 @@ awk '
 BEGIN{
 	FS="\t";
 	OFS="\t";
+	while (getline < "taxon"){
+		gsub(" ","_",$2);
+		species[$2]=$1;
+	}
 }
 {
-	print NR,$2,$3,$4,$5,$6,$7,$8,$9 >>refMain; 
-	gsub("/,$//",$10); 
+	print NR,species[$1],$3,$4,$5,$6,$7,$8,$9,$10 >>refMain; 
 	gsub("/,$//",$11); 
-	split($10,starts,","); 
-	split($11,ends,","); 
+	gsub("/,$//",$12); 
+	split($11,starts,","); 
+	split($12,ends,","); 
 	i=1; 
-	while (i <=$9){
+	while (i <=$10){
 		exnum=i;
-		if ($4 == "-"){
-			exnum=$9-(i-1);
+		if ($5 == "-"){
+			exnum=$10-(i-1);
 		}	
 		 print NR, exnum, starts[i], ends[i] >>refExon;
 		 i++;

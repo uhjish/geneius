@@ -22,7 +22,7 @@ echo "Getting UCSC species list"
 curl ftp://hgdownload.cse.ucsc.edu/goldenPath/currentGenomes/ | awk '(NR>2){print $9}' >spList 
 
 echo "Getting Refseq annos for all species"
-cat spList | xargs -I % echo 'echo % && curl ftp://hgdownload.cse.ucsc.edu/goldenPath/currentGenomes/%/database/refFlat.txt.gz | zcat >>refGene.all.ucsc'| sh 
+cat spList | xargs -I % echo 'echo % && curl ftp://hgdownload.cse.ucsc.edu/goldenPath/currentGenomes/%/database/refFlat.txt.gz | zcat | mawk "{print \"%\t\" \$0;}" >>refGene.all.ucsc'| sh 
 $found = `wc -l refGene.all.ucsc`
 echo "Found $found Refseq records"
 

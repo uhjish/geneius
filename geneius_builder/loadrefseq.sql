@@ -6,6 +6,7 @@ drop table if exists tbl_refExon;
 create table tbl_refMain(
 	id int not null,
 	primary key(id),
+	map_org int not null,
 	refseq_id varchar(100),
 	index ref_idx (refseq_id),
 	chr varchar(100),
