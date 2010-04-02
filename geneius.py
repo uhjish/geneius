@@ -204,7 +204,6 @@ def lookup_refseq(symbols,org,geneius_db):
     left=True
 
     for entry in geneius_db.query(query):
-
         new_exon = {
             "number":entry[f_exNum],
             "start":entry[f_exSt],
@@ -220,32 +219,27 @@ def lookup_refseq(symbols,org,geneius_db):
             "cds_end":entry[f_cdsEnd],
             "num_exons":entry[f_nExons],
             "exons":[new_exon],
+            "cds":[],
             "5utr":[],
-            "3utr":[],
-            "cds":[]
+            "3utr":[]
             }
-        
-                              
-
         if entry[f_uid] == map_id:
             results[-1]["mappings"][-1]["exons"].append(new_exon)
         else:
             #flush out the utrs for the last mapping
             if map_id != None:
+                    results[-1]["mappings"][-1]["cds"].extend(cds)
                     if results[-1]["mappings"][-1]["strand"] == "+" :
                         results[-1]["mappings"][-1]["5utr"].extend(lutr)
                         results[-1]["mappings"][-1]["3utr"].extend(rutr)
                     else:
                         results[-1]["mappings"][-1]["5utr"].extend(rutr)
                         results[-1]["mappings"][-1]["3utr"].extend(lutr)
-                    results[-1]["mappings"][-1]["cds"].extend(cds)
                     left=True
                     lutr=[]
                     rutr=[]
-                    cds=[]
             if entry[f_rfsq] == mref:
                 map_id = entry[0]
-                curutrstart = None
                 results[-1]["mappings"].append(new_mapping)
             else:
                 map_id = entry[f_uid]
@@ -276,14 +270,15 @@ def lookup_refseq(symbols,org,geneius_db):
                     rutr.append( [ entry[f_cdsEnd] , entry[f_exEnd] ] )
                 else:
                     rutr.append( [ entry[f_exSt] , entry[f_exEnd] ] ) 
-
-    #flush out last set of utr/cds
-    if results[-1]["mappings"][-1]["strand"] == "+" :
-        results[-1]["mappings"][-1]["5utr"].extend(lutr)
-        results[-1]["mappings"][-1]["3utr"].extend(rutr)
-    else:
-        results[-1]["mappings"][-1]["5utr"].extend(rutr)
-        results[-1]["mappings"][-1]["3utr"].extend(lutr)
+    if (map_id != None): 
+	    #flush out last set of utr/cds
+	    if results[-1]["mappings"][-1]["strand"] == "+" :
+	        results[-1]["mappings"][-1]["5utr"].extend(lutr)
+	        results[-1]["mappings"][-1]["3utr"].extend(rutr)
+	    else:
+	        results[-1]["mappings"][-1]["5utr"].extend(rutr)
+	        results[-1]["mappings"][-1]["3utr"].extend(lutr)
+	    results[-1]["mappings"][-1]["cds"].extend(cds)
     return results
 
 def search_for_refseq(qsymbol,organism,geneius_db):
