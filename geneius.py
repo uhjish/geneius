@@ -68,7 +68,7 @@ def whereami_flank(org, chr, pos, direction, geneius_db):
     flank_limit = 100
     
     main_fields = ["main.refseq_id","main.chr","main.strand","main.start","main.end"]
-    species_fields = ["species.name"]
+    species_fields = ["species.name","species.build"]
     
     if direction == "left":
         cmp = " < "
@@ -85,7 +85,7 @@ def whereami_flank(org, chr, pos, direction, geneius_db):
     
     query = "select distinct "+ ", ".join(main_fields+species_fields) + " from tbl_refMain as main "
     query += "inner join tbl_species as species on main.map_org=species.tax_id "
-    query += "where species.name like \"%"+org+"%\" and "
+    query += "where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") and "
     query += query_pos+" order by "+cmp_to+ord+" LIMIT "+str(flank_limit)
 
     flank=[]
@@ -95,7 +95,8 @@ def whereami_flank(org, chr, pos, direction, geneius_db):
             break
         closest=entry[entry_cmp]
         feature = {
-		"map_org":entry[5],
+                "map_org":entry[5],
+                "map_build":entry[6],
                 "chr":entry[1],
                 "start":entry[3],
                 "end":entry[4],
@@ -111,14 +112,14 @@ def whereami_inside(org, chr, pos, geneius_db):
 
     main_fields = ["main.refseq_id","main.chr","main.strand","main.start","main.end"]
     exon_fields = ["exon.exon_num","exon.exon_start","exon.exon_end"]
-    species_fields = ["species.name"]
+    species_fields = ["species.name","species.build"]
 
     query_pos = "main.chr=\""+chr+"\" and main.start <= "+pos+" and main.end >="+pos
 
     query = "select "+", ".join( main_fields + exon_fields + species_fields) + " from tbl_refMain as main "
     query += " inner join tbl_refExon as exon on exon.ref_id=main.id "
     query += " inner join tbl_species as species on species.tax_id=main.map_org ";
-    query += "where species.name like \"%"+org+"%\" and "
+    query += "where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") and "
     query += " %s order by main.refseq_id,main.id,exon_start ;" % query_pos
 
     last_exon_end=-1
@@ -136,7 +137,8 @@ def whereami_inside(org, chr, pos, geneius_db):
                 "refseq_id":entry[0],
                 "type":"exon",
                 "exon_num":entry[5],
-		"map_org":entry[8]
+                "map_org":entry[8],
+                "map_build":entry[9]
                 }
             inside.append(inside_exon)
         if last_exon_end != -1 and last_exon_end <= pos and entry[6] >=pos:
@@ -148,7 +150,8 @@ def whereami_inside(org, chr, pos, geneius_db):
                 "refseq_id":entry[0],
                 "type":"intron",
                 "flank_exons":[last_exon_num,entry[6]],
-		"map_org":entry[8]
+                "map_org":entry[8],
+                "map_build":entry[9]
                 }
             inside.append(inside_intron)
         last_exon_end = entry[7]
@@ -171,11 +174,12 @@ def lookup_refseq(symbols,org,geneius_db):
     
     main_fields = ["main.id","main.refseq_id","main.chr","main.strand","main.start","main.end","main.cds_start","main.cds_end","main.num_exons"]
     exon_fields = ["exon.exon_num","exon.exon_start","exon.exon_end"]
-    species_fields = ["species.name"]
+    species_fields = ["species.name","species.build"]
     query = " select "+", ".join(main_fields+exon_fields+species_fields)+" from tbl_refMain as main "
     query += " inner join tbl_refExon as exon on exon.ref_id=main.id "
     query += " inner join tbl_species as species on species.tax_id=main.map_org ";
-    query += " where ( %(refs)s ) and species.name like \"%(sp)s\" " % {'refs':" or ".join(sids), 'sp':"%"+org+"%"}
+    query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") and "
+    query += " ( %(refs)s ) " % {'refs':" or ".join(sids)}
     query += " order by main.refseq_id,main.id,exon_start ;"
 
     #store frequently used indices
@@ -192,6 +196,7 @@ def lookup_refseq(symbols,org,geneius_db):
     f_exSt=10
     f_exEnd=11
     f_maporg=12
+    f_mapbuild=13
     
 
     results = []
@@ -211,6 +216,7 @@ def lookup_refseq(symbols,org,geneius_db):
             }
         new_mapping = {
             "map_org":entry[f_maporg],
+            "map_build":entry[f_mapbuild],
             "chr":entry[f_chr],
             "strand":entry[f_str],
             "start":entry[f_start],
@@ -218,26 +224,26 @@ def lookup_refseq(symbols,org,geneius_db):
             "cds_start":entry[f_cdsSt],
             "cds_end":entry[f_cdsEnd],
             "num_exons":entry[f_nExons],
-            "exons":[new_exon],
-            "cds":[],
-            "5utr":[],
-            "3utr":[]
+            "exons":[new_exon]
+            #"cds":[],
+            #"5utr":[],
+            #"3utr":[]
             }
         if entry[f_uid] == map_id:
             results[-1]["mappings"][-1]["exons"].append(new_exon)
         else:
             #flush out the utrs for the last mapping
-            if map_id != None:
-                    results[-1]["mappings"][-1]["cds"].extend(cds)
-                    if results[-1]["mappings"][-1]["strand"] == "+" :
-                        results[-1]["mappings"][-1]["5utr"].extend(lutr)
-                        results[-1]["mappings"][-1]["3utr"].extend(rutr)
-                    else:
-                        results[-1]["mappings"][-1]["5utr"].extend(rutr)
-                        results[-1]["mappings"][-1]["3utr"].extend(lutr)
-                    left=True
-                    lutr=[]
-                    rutr=[]
+            #if map_id != None:
+            #    results[-1]["mappings"][-1]["cds"].extend(cds)
+            #    if results[-1]["mappings"][-1]["strand"] == "+" :
+            #        results[-1]["mappings"][-1]["5utr"].extend(lutr)
+            #        results[-1]["mappings"][-1]["3utr"].extend(rutr)
+            #    else:
+            #        results[-1]["mappings"][-1]["5utr"].extend(rutr)
+            #        results[-1]["mappings"][-1]["3utr"].extend(lutr)
+            #    left=True
+            #    lutr=[]
+            #    rutr=[]
             if entry[f_rfsq] == mref:
                 map_id = entry[0]
                 results[-1]["mappings"].append(new_mapping)
@@ -251,34 +257,40 @@ def lookup_refseq(symbols,org,geneius_db):
  
 
         #parse out utr & cds info
-        if entry[f_cdsSt] != entry[f_cdsEnd]:
-            if left:
-                if entry[f_exEnd] < entry[f_cdsSt]:
-                    lutr.append( [ entry[f_exSt] , entry[f_exEnd] ] )
-                elif entry[f_exSt] < entry[f_cdsSt]:
-                    lutr.append( [ entry[f_exSt] , entry[f_cdsSt] ] )
-                    cds.append( [ entry[f_cdsSt] , entry[f_exEnd] ] )
-                    left=False
-                else:
-                    cds.append( [ entry[f_exSt] , entry[f_exEnd] ] )
-                    left=False 
-            else:
-                if entry[f_exEnd] <= entry[f_cdsEnd]:
-                    cds.append( [ entry[f_exSt] , entry[f_exEnd] ] )
-                elif entry[f_exSt] < entry[f_cdsEnd]:
-                    cds.append( [ entry[f_exSt] , entry[f_cdsEnd] ] )
-                    rutr.append( [ entry[f_cdsEnd] , entry[f_exEnd] ] )
-                else:
-                    rutr.append( [ entry[f_exSt] , entry[f_exEnd] ] ) 
-    if (map_id != None): 
+        #if entry[f_cdsSt] != entry[f_cdsEnd]:
+        #    if left:
+        #        if entry[f_exEnd] < entry[f_cdsSt]:
+        #            lutr.append( [ entry[f_exSt] , entry[f_exEnd] ] )
+        #        elif entry[f_exSt] < entry[f_cdsSt]:
+        #            lutr.append( [ entry[f_exSt] , entry[f_cdsSt] ] )
+        #            cds.append( [ entry[f_cdsSt] , entry[f_exEnd] ] )
+        #            left=False
+        #        else:
+        #            cds.append( [ entry[f_exSt] , entry[f_exEnd] ] )
+        #            left=False
+        #        if entry[f_exEnd] > entry[f_cdsEnd]:
+        #            if entry[f_exSt] < entry[f_cdsEnd]:
+        #                cds.append( [ entry[f_exSt] , entry[f_cdsEnd] ] )
+        #                rutr.append( [ entry[f_cdsEnd] , entry[f_exEnd] ] )
+        #            else:
+        #                rutr.append( [ entry[f_exSt] , entry[f_exEnd] ] ) 
+        #    else:
+        #        if entry[f_exEnd] <= entry[f_cdsEnd]:
+        #            cds.append( [ entry[f_exSt] , entry[f_exEnd] ] )
+        #        elif entry[f_exSt] < entry[f_cdsEnd]:
+        #            cds.append( [ entry[f_exSt] , entry[f_cdsEnd] ] )
+        #            rutr.append( [ entry[f_cdsEnd] , entry[f_exEnd] ] )
+        #        else:
+        #            rutr.append( [ entry[f_exSt] , entry[f_exEnd] ] ) 
+    #if (map_id != None): 
 	    #flush out last set of utr/cds
-	    if results[-1]["mappings"][-1]["strand"] == "+" :
-	        results[-1]["mappings"][-1]["5utr"].extend(lutr)
-	        results[-1]["mappings"][-1]["3utr"].extend(rutr)
-	    else:
-	        results[-1]["mappings"][-1]["5utr"].extend(rutr)
-	        results[-1]["mappings"][-1]["3utr"].extend(lutr)
-	    results[-1]["mappings"][-1]["cds"].extend(cds)
+	    #if results[-1]["mappings"][-1]["strand"] == "+" :
+	    #    results[-1]["mappings"][-1]["5utr"].extend(lutr)
+	    #    results[-1]["mappings"][-1]["3utr"].extend(rutr)
+	    #else:
+	    #    results[-1]["mappings"][-1]["5utr"].extend(rutr)
+	    #    results[-1]["mappings"][-1]["3utr"].extend(lutr)
+	    #results[-1]["mappings"][-1]["cds"].extend(cds)
     return results
 
 def search_for_refseq(qsymbol,organism,geneius_db):

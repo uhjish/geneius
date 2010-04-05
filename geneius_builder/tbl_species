@@ -1,50 +1,50 @@
-7227	Drosophila melanogaster
-6239	Caenorhabditis elegans
-9913	Bos taurus
-9031	Gallus gallus
-9606	Homo sapiens
-10090	Mus musculus
-9601	Pongo abelii
-10116	Rattus norvegicus
-8364	Xenopus tropicalis
-7955	Danio rerio
-9598	Pan troglodytes
-31033	Fugu rubripes
-4932	Saccharomyces cerevisiae
-9615	Canis familiaris
-9796	Equus caballus
-6238	Caenorhabditis briggsae
-10141	Cavia porcellus
-9685	Felis catus
-6500	Aplysia californica
-7244	Drosophila virilis
-7240	Drosophila simulans
-7165	Anopheles gambiae
-7238	Drosophila sechellia
-7460	Apis mellifera
-13616	Monodelphis domestica
-7668	Strongylocentrotus purpuratus
-8090	Oryzias latipes
-7739	Branchiostoma floridae
-7230	Drosophila mojavensis
-307796	Saccharomyces cerevisiae
-7220	Drosophila erecta
-7234	Drosophila persimilis
-7245	Drosophila yakuba
-7217	Drosophila ananassae
-7222	Drosophila grimshawi
-99883	Tetraodon nigroviridis
-59729	Taeniopygia guttata
-7757	Petromyzon marinus
-9258	Ornithorhynchus anatinus
-9483	Callithrix jacchus
-7719	Ciona intestinalis
-9785	Loxodonta africana
-31234	Caenorhabditis remanei
-545124	Saccharomyces cerevisiae
-285006	Saccharomyces cerevisiae
-281687	Caenorhabditis japonica
-28377	Anolis carolinensis
-54126	Pristionchus pacificus
-7237	Drosophila pseudoobscura
-135651	Caenorhabditis brenneri
+28377	Anolis carolinensis	anoCar1
+7165	Anopheles gambiae	anoGam1
+7460	Apis mellifera	apiMel2
+6500	Aplysia californica	aplCal1
+9913	Bos taurus	bosTau4
+7739	Branchiostoma floridae	braFlo1
+135651	Caenorhabditis brenneri	caePb2
+6238	Caenorhabditis briggsae	cb3
+6239	Caenorhabditis elegans	ce6
+281687	Caenorhabditis japonica	caeJap1
+31234	Caenorhabditis remanei	caeRem3
+9483	Callithrix jacchus	calJac1
+9615	Canis familiaris	canFam2
+10141	Cavia porcellus	cavPor3
+7719	Ciona intestinalis	ci2
+7955	Danio rerio	danRer6
+7217	Drosophila ananassae	droAna2
+7220	Drosophila erecta	droEre1
+7222	Drosophila grimshawi	droGri1
+7227	Drosophila melanogaster	dm3
+7230	Drosophila mojavensis	droMoj2
+7234	Drosophila persimilis	droPer1
+7237	Drosophila pseudoobscura	dp3
+7238	Drosophila sechellia	droSec1
+7240	Drosophila simulans	droSim1
+7244	Drosophila virilis	droVir2
+7245	Drosophila yakuba	droYak2
+9796	Equus caballus	equCab2
+9685	Felis catus	felCat3
+31033	Fugu rubripes	fr2
+9031	Gallus gallus	galGal3
+9606	Homo sapiens	hg19
+9785	Loxodonta africana	loxAfr3
+13616	Monodelphis domestica	monDom5
+10090	Mus musculus	mm9
+9258	Ornithorhynchus anatinus	ornAna1
+8090	Oryzias latipes	oryLat2
+9598	Pan troglodytes	panTro2
+7757	Petromyzon marinus	petMar1
+9601	Pongo abelii	ponAbe2
+54126	Pristionchus pacificus	priPac1
+10116	Rattus norvegicus	rn4
+285006	Saccharomyces cerevisiae	sacCer2
+307796	Saccharomyces cerevisiae	sacCer2
+4932	Saccharomyces cerevisiae	sacCer2
+545124	Saccharomyces cerevisiae	sacCer2
+7668	Strongylocentrotus purpuratus	strPur2
+59729	Taeniopygia guttata	taeGut1
+99883	Tetraodon nigroviridis	tetNig2
+8364	Xenopus tropicalis	xenTro2
