@@ -144,12 +144,12 @@ def whereami_inside(org, chr, pos, geneius_db):
         if last_exon_end != -1 and last_exon_end <= pos and entry[6] >=pos:
             inside_intron = {
                 "chr":entry[1],
-                "start":entry[6],
-                "end":entry[7],
+                "start":last_exon_end,
+                "end":entry[6],
                 "strand":entry[2],
                 "refseq_id":entry[0],
                 "type":"intron",
-                "flank_exons":[last_exon_num,entry[6]],
+                "flank_exons":[last_exon_num,entry[5]],
                 "map_org":entry[8],
                 "map_build":entry[9]
                 }
