@@ -25,18 +25,20 @@ except:
 try:
     from suds.client import Client
 except:
-    missing_package("suds")
+    missing_package("Suds")
+
 
 #import geneius libraries
-from libgeneius.error import GeneiusError
 #wrap our imports incase we have a problem
 #importing
+from libgeneius.error import GeneiusError
 try:
     from gsettings import settings
     from libgeneius.mysql import GeneiusDb
     from libgeneius.search import search_for_refseq
     from libgeneius.whereami import whereami
     from libgeneius.lookup import lookup_refseq
+    from libgeneius.ncbi import add_sequence_to_refseqs
 except GeneiusError,ge:
     Fatal_Error(str(ge))
 
@@ -117,10 +119,16 @@ try:
             refids = json.loads(jsonrefids)
         except:
             returnobj_error(return_obj,"problem decoding refseq_ids should be json array")
+        
+        #init ncbi webservices
+        ncbi_eutils_handle = Client(settings.EUTILS_WSDL)
+        ncbi_sequence_handle = Client(settings.SEQUENCES_WSDL)
         try:
             dbresults = lookup_refseq(refids,organism,geneius_db)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
+            
+        add_sequence_to_refseqs(dbresults,ncbi_eutils_handle,ncbi_sequence_handle)
         
         return_obj.results = dbresults
 
