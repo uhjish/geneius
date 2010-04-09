@@ -82,7 +82,7 @@ def get_required_var(var,form,return_obj):
 
 def get_optional_var(var,form,return_obj):
     if not form.has_key(var):
-        return("%");    
+        return False
     return form.getvalue(var)
 
 
@@ -114,21 +114,31 @@ try:
 
     elif action=="lookup":
         organism=get_optional_var("organism",form,return_obj)
+        if not organism:
+            organism="%"
+        with_sequence=get_optional_var("with_sequence",form,return_obj)
+        if str(with_sequence).upper().startswith("T"):
+            with_sequence=True
+        else:
+            with_sequence=False
+            
         jsonrefids = get_required_var("refseq_ids",form,return_obj)
         try:
             refids = json.loads(jsonrefids)
         except:
             returnobj_error(return_obj,"problem decoding refseq_ids should be json array")
         
-        #init ncbi webservices
-        ncbi_eutils_handle = Client(settings.EUTILS_WSDL)
-        ncbi_sequence_handle = Client(settings.SEQUENCES_WSDL)
+        
         try:
             dbresults = lookup_refseq(refids,organism,geneius_db)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
             
-        add_sequence_to_refseqs(dbresults,ncbi_eutils_handle,ncbi_sequence_handle)
+        if with_sequence:
+        #init ncbi webservices
+            ncbi_eutils_handle = Client(settings.EUTILS_WSDL)
+            ncbi_sequence_handle = Client(settings.SEQUENCES_WSDL)
+            add_sequence_to_refseqs(dbresults,ncbi_eutils_handle,ncbi_sequence_handle)
         
         return_obj.results = dbresults
 
