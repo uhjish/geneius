@@ -27,6 +27,10 @@ try:
 except:
     missing_package("Suds")
 
+try:
+    import MySQLdb
+except:
+    missing_package("MySQLdb")
 
 #import geneius libraries
 #wrap our imports incase we have a problem
