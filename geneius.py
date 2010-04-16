@@ -23,11 +23,6 @@ try:
 except:
     missing_package("simplejson")
 try:
-    from suds.client import Client
-except:
-    missing_package("Suds")
-
-try:
     import MySQLdb
 except:
     missing_package("MySQLdb")
@@ -42,8 +37,6 @@ try:
     from libgeneius.search import search_for_refseq
     from libgeneius.whereami import whereami
     from libgeneius.lookup import lookup_refseq
-    from libgeneius.ncbi import get_gid_for_refseq,get_ncbi_entry_for_gid
-    from libgeneius.ncbi import seq_from_ncbi_data,definition_from_ncbi_data
 except GeneiusError,ge:
     Fatal_Error(str(ge))
 
@@ -121,16 +114,16 @@ try:
         organism=get_optional_var("organism",form,return_obj)
         if not organism:
             organism="%"
-        with_sequence=get_optional_var("with_sequence",form,return_obj)
-        with_definition=get_optional_var("with_definition",form,return_obj)
-        if str(with_sequence).upper().startswith("T"):
-            with_sequence=True
-        else:
-            with_sequence = False
-        if str(with_definition).upper().startswith("T"):
-            with_definition=True
-        else:
-            with_definition=False
+        #with_sequence=get_optional_var("with_sequence",form,return_obj)
+        #with_definition=get_optional_var("with_definition",form,return_obj)
+        #if str(with_sequence).upper().startswith("T"):
+        #    with_sequence=True
+        #else:
+        #    with_sequence = False
+        #if str(with_definition).upper().startswith("T"):
+        #    with_definition=True
+        #else:
+        #    with_definition=False
         
         jsonrefids = get_required_var("refseq_ids",form,return_obj)
         try:
@@ -143,20 +136,6 @@ try:
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
             
-        #add extra things
-
-        if with_sequence or with_definition:
-            #init ncbi webservices
-            ncbi_eutils_handle = Client(settings.EUTILS_WSDL)
-            ncbi_sequence_handle = Client(settings.SEQUENCES_WSDL)
-            for myrefseq in dbresults:
-                gid = get_gid_for_refseq(myrefseq['refseq_id'],ncbi_eutils_handle)
-                ncbi_data = get_ncbi_entry_for_gid(gid,ncbi_sequence_handle)
-                if with_sequence:
-                    myrefseq['sequence'] = seq_from_ncbi_data(ncbi_data)
-                if with_definition:
-                    myrefseq['definition'] = definition_from_ncbi_data(ncbi_data)
-                    
         
         return_obj.results = dbresults
 
