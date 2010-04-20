@@ -6,6 +6,8 @@ DB_USER = "reader"
 DB_PASSWORD = "sseltoor"
 DB_DATABASE = "geneius"
 
+#GENOME 2bit files
+GENOME_PATH="/bio/ucsc/%/%.2bit"
 
 #NCBI WSDL Files
 #if relative path, make it in 

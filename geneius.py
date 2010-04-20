@@ -37,6 +37,7 @@ try:
     from libgeneius.search import search_for_refseq
     from libgeneius.whereami import whereami
     from libgeneius.lookup import lookup_refseq
+    from libgeneius.sequence import fetch_sequence
 except GeneiusError,ge:
     Fatal_Error(str(ge))
 
@@ -91,10 +92,10 @@ return_obj = ReturnObj()
 try:
     geneius_db = GeneiusDb(settings.DB_DATABASE,settings.DB_SERVER,
                            settings.DB_USER,settings.DB_PASSWORD)
-
+    genomes_rule = settings.GENOME_PATH
     form = cgi.FieldStorage()
     action = get_required_var("action",form,return_obj)
-    allowable_actions = ["search","lookup","whereami"]
+    allowable_actions = ["search","lookup","whereami","sequence"]
     if not action in allowable_actions:
         returnobj_error(return_obj,"action must be of %s" % allowable_actions)
 
@@ -150,6 +151,18 @@ try:
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results = dbresults
+    elif action == "sequence":
+        build=get_required_var("build", form, return_obj)
+        chrom=get_required_var("chr", form, return_obj)
+        start=int(get_required_var("start", form, return_obj))
+        end=int(get_required_var("end", form, return_obj))
+        strand=get_optional_var("strand",form,return_obj)
+        genome = genomes_rule.replace("%",build)
+        try:
+            seq = fetch_sequence(genome, chrom, start, end, strand)
+        except Exception, pe:
+            returnobj_error(return_obj,str(pe))
+        return_obj.results = seq
 except GeneiusError, ge:
     returnobj_error(return_obj,str(ge))
 

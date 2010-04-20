@@ -40,5 +40,7 @@ echo "Building getting sequences & headers"
 #cd tmp_fa
 #../aspera/getNCBIbatch.sh ftp://ftp.ncbi.nlm.nih.gov/refseq/release/complete/ rna.fna.gz
 #cd ..
-zcat tmp_fa/*.rna.fna.gz | grep -e'^>' | sed -e 's/^>gi|//' -e 's/ref|//' | tr "|" "\t" | mawk 'BEGIN{FS="\t"; OFS="\t"}{gsub(/\.[0-9]+/,"",$2); print $0;}' >refDesc
+#zcat tmp_fa/*.rna.fna.gz | grep -e'^>' | sed -e 's/^>gi|//' -e 's/ref|//' | tr "|" "\t" | mawk 'BEGIN{FS="\t"; OFS="\t"}{gsub(/\.[0-9]+/,"",$2); print $0;}' >refDesc
+
+cut -f 2 spList | xargs -I % mkdir /bio/ucsc/%
 
