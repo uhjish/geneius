@@ -37,7 +37,7 @@ try:
     from libgeneius.search import search_for_refseq
     from libgeneius.whereami import whereami
     from libgeneius.lookup import lookup_refseq
-    from libgeneius.sequence import fetch_sequence
+    from libgeneius.sequence import *
 except GeneiusError,ge:
     Fatal_Error(str(ge))
 
@@ -115,7 +115,7 @@ try:
         organism=get_optional_var("organism",form,return_obj)
         if not organism:
             organism="%"
-        #with_sequence=get_optional_var("with_sequence",form,return_obj)
+        sequence=get_optional_var("sequence",form,return_obj)
         #with_definition=get_optional_var("with_definition",form,return_obj)
         #if str(with_sequence).upper().startswith("T"):
         #    with_sequence=True
@@ -134,6 +134,8 @@ try:
         
         try:
             dbresults = lookup_refseq(refids,organism,geneius_db)
+            if sequence and (sequence == "1" or sequence.upper().startswith("T") ):
+                    dbresults = fetch_gene_sequences(genomes_rule, dbresults)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
             
@@ -153,13 +155,18 @@ try:
         return_obj.results = dbresults
     elif action == "sequence":
         build=get_required_var("build", form, return_obj)
-        chrom=get_required_var("chr", form, return_obj)
-        start=int(get_required_var("start", form, return_obj))
-        end=int(get_required_var("end", form, return_obj))
-        strand=get_optional_var("strand",form,return_obj)
+        jranges=get_required_var("ranges", form, return_obj)
+        spliced=get_optional_var("spliced", form, return_obj)
+        try:
+            ranges = json.loads(jranges)
+        except:
+            returnobj_error(return_obj,"problem decoding ranges should be json array of dicts")
         genome = genomes_rule.replace("%",build)
         try:
-            seq = fetch_sequence(genome, chrom, start, end, strand)
+            if spliced and (spliced == "1" or spliced.upper().startswith("T") ):
+                    seq = fetch_spliced_sequence(genome, ranges)
+            else:
+                seq = fetch_sequences(genome, ranges)
         except Exception, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results = seq
