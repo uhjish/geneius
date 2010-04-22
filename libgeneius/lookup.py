@@ -1,3 +1,4 @@
+from coding import *
 
 def lookup_refseq(symbols,org,geneius_db):
     '''
@@ -82,6 +83,10 @@ def lookup_refseq(symbols,org,geneius_db):
                         "desc":entry[f_desc],
                         "mappings":[new_mapping]
                         })
-
     return results
 
+def lookup_refseq_with_utrs(symbols,org,geneius_db):
+    res = lookup_refseq(symbols, org, geneius_db)
+    for gene in res:
+       gene = addcoding(gene)
+    return res 

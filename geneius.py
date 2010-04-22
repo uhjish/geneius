@@ -36,7 +36,7 @@ try:
     from libgeneius.mysql import GeneiusDb
     from libgeneius.search import search_for_refseq
     from libgeneius.whereami import *
-    from libgeneius.lookup import lookup_refseq
+    from libgeneius.lookup import *
     from libgeneius.sequence import *
 except GeneiusError,ge:
     Fatal_Error(str(ge))
@@ -131,9 +131,9 @@ try:
         except:
             returnobj_error(return_obj,"problem decoding refseq_ids should be json array")
         try:
-            dbresults = lookup_refseq(refids,organism,geneius_db)
+            dbresults = lookup_refseq_with_utrs(refids,organism,geneius_db)
             if sequence and (sequence == "1" or sequence.upper().startswith("T") ):
-                    dbresults = fetch_gene_sequences(genomes_rule, dbresults)
+                dbresults = fetch_gene_sequences(genomes_rule, dbresults)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results = dbresults
