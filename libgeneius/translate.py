@@ -1,39 +1,31 @@
-from sequence import fetch_spliced_sequence 
-
-class Codons:
-    codon_tbl = {
-        "aaa" : "K", "aac" : "N", "aag" : "K", "aat" : "N",
-        "aca" : "T", "acc" : "T", "acg" : "T", "act" : "T",
-        "aga" : "R", "agc" : "S", "agg" : "R", "agt" : "S",
-        "ata" : "I", "atc" : "I", "atg" : "M", "att" : "I",
-        "caa" : "Q", "cac" : "H", "cag" : "Q", "cat" : "H",
-        "cca" : "P", "ccc" : "P", "ccg" : "P", "cct" : "P",
-        "cga" : "R", "cgc" : "R", "cgg" : "R", "cgt" : "R",
-        "cta" : "L", "ctc" : "L", "ctg" : "L", "ctt" : "L",
-        "gaa" : "E", "gac" : "D", "gag" : "E", "gat" : "D",
-        "gca" : "A", "gcc" : "A", "gcg" : "A", "gct" : "A",
-        "gga" : "G", "ggc" : "G", "ggg" : "G", "ggt" : "G",
-        "gta" : "V", "gtc" : "V", "gtg" : "V", "gtt" : "V",
-        "taa" : "*", "tac" : "Y", "tag" : "*", "tat" : "Y",
-        "tca" : "S", "tcc" : "S", "tcg" : "S", "tct" : "S",
-        "tga" : "*", "tgc" : "C", "tgg" : "W", "tgt" : "C",
-        "tta" : "L", "ttc" : "F", "ttg" : "L", "ttt" : "F"  }
-    def translate(cdn):
-        try:
-            return codon_tbl[ cdn.lower() ]
-        except:
-            return None
+import codons
+from sequence import fetch_mapping_sequence 
 
 def getCodonFromSequence(genomes_rule, map, pos):
-    seq = fetch_spliced_sequence(genomes_rule, map)
+    #raise Exception(str(map))
+    seq = fetch_mapping_sequence(genomes_rule, map)
+    if pos < 1 or pos > len(seq):
+        raise Exception( "translate.py:getCodonFromSequence - pos out of range [1,len(sequence)]")
+    ofst=None
+    len5=0
     for lexon in map["utr5"]:
         len5 += lexon[1]-lexon[0]
     lencds = 0
     for cexon in map["cds"]:
         lencds += cexon[1]-cexon[0]
-    if pos < len5:
-        return "utr5"
-    if pos >= len5+lencds:
-        return "utr3"
-    ofst = (pos-len5-1)/3
-    return seq[ofst,ofst+2]
+    if pos <= len5:
+        codon = "utr5"
+        aa= None
+    elif pos > len5+lencds:
+        codon= "utr3"
+        aa=None
+    else:
+        ofst = (pos-len5-1) % 3 
+        codon =  seq[pos-ofst-1:pos-ofst+2]
+        aa = codons.translate(codon)
+    base = seq[pos-1]
+    result = {  "base":base,
+                "codon":codon,
+                "aa":aa, 
+                "offset":ofst }
+    return result 

@@ -5,7 +5,7 @@
 
 import sys
 import cgi
-
+import traceback
 import warnings
 
 def Fatal_Error(msg):
@@ -38,6 +38,7 @@ try:
     from libgeneius.whereami import *
     from libgeneius.lookup import *
     from libgeneius.sequence import *
+    from libgeneius.translate import getCodonFromSequence
 except GeneiusError,ge:
     Fatal_Error(str(ge))
 
@@ -71,7 +72,7 @@ def print_return(robj):
     sys.exit()
 
 def returnobj_error(obj,error):
-    obj.error = error
+    obj.error = error + "\n" + traceback.format_exc()
     print_return(obj)
 
 def get_required_var(var,form,return_obj):
@@ -95,7 +96,7 @@ try:
     genomes_rule = settings.GENOME_PATH
     form = cgi.FieldStorage()
     action = get_required_var("action",form,return_obj)
-    allowable_actions = ["search","lookup","whereami","sequence"]
+    allowable_actions = ["search","lookup","whereami","sequence","codon"]
     if not action in allowable_actions:
         returnobj_error(return_obj,"action must be of %s" % allowable_actions)
 
@@ -169,6 +170,16 @@ try:
         except Exception, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results = seq
+    elif action == "codon":
+        uid = get_required_var("uid", form, return_obj)
+        pos = int(get_required_var("pos", form, return_obj))
+        genomic = get_optional_var("genomic", form, return_obj)
+        try:
+            mapping = get_refseq_by_uid(uid,geneius_db)
+            res = getCodonFromSequence(genomes_rule, mapping, pos)
+        except Exception, pe:
+            returnobj_error(return_obj,str(pe))
+        return_obj.results=res
 except GeneiusError, ge:
     returnobj_error(return_obj,str(ge))
 
