@@ -2,7 +2,8 @@ from libgeneius.error import GeneiusError
 try:
     import bx.seq.twobit
 except:
-    raise GeneiusError("Missing Package: bx / bx-python / bx-omelogic")
+    pass
+    #raise GeneiusError("Missing Package: bx / bx-python / bx-omelogic http://bitbucket.org/james_taylor/bx-python")
 
 def reverse_complement( s ):
     complement_dna = {"A":"T", "T":"A", "C":"G", "G":"C", "a":"t", "t":"a", "c":"g", "g":"c", "N":"N", "n":"n" }
