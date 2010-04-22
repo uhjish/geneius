@@ -35,7 +35,7 @@ try:
     from gsettings import settings
     from libgeneius.mysql import GeneiusDb
     from libgeneius.search import search_for_refseq
-    from libgeneius.whereami import whereami
+    from libgeneius.whereami import *
     from libgeneius.lookup import lookup_refseq
     from libgeneius.sequence import *
 except GeneiusError,ge:
@@ -125,31 +125,30 @@ try:
         #    with_definition=True
         #else:
         #    with_definition=False
-        
         jsonrefids = get_required_var("refseq_ids",form,return_obj)
         try:
             refids = json.loads(jsonrefids)
         except:
             returnobj_error(return_obj,"problem decoding refseq_ids should be json array")
-        
         try:
             dbresults = lookup_refseq(refids,organism,geneius_db)
             if sequence and (sequence == "1" or sequence.upper().startswith("T") ):
                     dbresults = fetch_gene_sequences(genomes_rule, dbresults)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
-            
-        
         return_obj.results = dbresults
-
     elif action=="whereami":
         organism=get_required_var("organism",form,return_obj)
         chr=get_required_var("chr",form,return_obj)
         pos=get_required_var("pos",form,return_obj)
+        as_gene=get_optional_var("as_gene",form,return_obj)
         try:
         #dbresults = search_for_refseq("TP53","sapiens",geneius_db)
         #dbresults = lookup_refseq(refids,geneius_db)
-            dbresults = whereami(organism, chr, pos, geneius_db)
+            if as_gene and (as_gene == "1" or as_gene.upper().startswith("T")):
+                dbresults = whereami_gene(organism, chr, pos, geneius_db)
+            else:
+                dbresults = whereami(organism, chr, pos, geneius_db)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results = dbresults
