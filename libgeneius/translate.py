@@ -1,9 +1,43 @@
 import codons
-from sequence import fetch_mapping_sequence 
+from sequence import fetch_mapping_rna 
+
+def getMutationEffects(genomes_rule, map, pos, newbases):
+    original = getCodonFromSequence(genomes_rule, map, pos)
+    mutations = []
+    for newbase in newbases:
+        ncod = None
+        naa = None
+        if newbase == "-":
+            effect = ["deletion", "frameshift"]
+        elif len(newbase) > 1 and len(newbase) % 3 != 0:
+            effect = ["insertion", "frameshift"]
+        elif len(newbase) % 3 == 0:
+            effect = ["insertion", "in frame"]
+        elif newbase == original["allele"]:
+            effect = ["reference"]
+        elif len(newbase) == 1:
+            effect = ["SNP"]
+            ofs = original["offset"]
+            ocod = original["codon"]
+            ncod = ocod[0:ofs] + newbase + ocod[ofs+1:3]
+            naa = codons.translate(ncod)
+            if naa == original["aa"]:
+                effect.append("synonymous")
+            elif original["aa"] == "*":
+                effect.append("runon")
+            elif naa == "*":
+                effect.append("nonsense")
+            else:
+                effect.append("missense")
+        mutations.append( { "allele" : newbase,
+                            "codon" : ncod,
+                            "aa" : naa,
+                            "effect" : effect } )
+    original["mutations"] = mutations
+    return original
 
 def getCodonFromSequence(genomes_rule, map, pos):
-    #raise Exception(str(map))
-    seq = fetch_mapping_sequence(genomes_rule, map)
+    seq = fetch_mapping_rna(genomes_rule, map)
     if pos < 1 or pos > len(seq):
         raise Exception( "translate.py:getCodonFromSequence - pos out of range [1,len(sequence)]")
     ofst=None
@@ -24,8 +58,8 @@ def getCodonFromSequence(genomes_rule, map, pos):
         codon =  seq[pos-ofst-1:pos-ofst+2]
         aa = codons.translate(codon)
     base = seq[pos-1]
-    result = {  "base":base,
+    result = {  "allele":base,
                 "codon":codon,
                 "aa":aa, 
                 "offset":ofst }
-    return result 
+    return result

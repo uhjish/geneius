@@ -1,3 +1,4 @@
+import codons
 from libgeneius.error import GeneiusError
 try:
     import bx.seq.twobit
@@ -41,7 +42,7 @@ def fetch_spliced_sequence(genome, ranges):
             seq = seq+block
     return seq
 
-def get_ranges_for_mapping(mapping):
+def get_rna_ranges_for_mapping(mapping):
     ranges = []
     for exon in mapping["exons"]:
         ranges.append( {    "chr": mapping["chr"],
@@ -50,14 +51,48 @@ def get_ranges_for_mapping(mapping):
                             "strand": mapping["strand"] } )
     return ranges
 
-def fetch_mapping_sequence(genomes_rule, mapping):
+def get_coding_ranges_for_mapping(mapping):
+    ranges = []
+    for cexon in mapping["cds"]:
+        ranges.append( {    "chr": mapping["chr"],
+                            "start": cexon[0],
+                            "end": cexon[1],
+                            "strand": mapping["strand"] } )
+    return ranges
+
+def fetch_mapping_dna(genomes_rule, mapping):
     genome = genomes_rule.replace("%",mapping["map_build"])
-    ranges = get_ranges_for_mapping(mapping)
-    return fetch_spliced_sequence( genome, ranges )
+    seq = fetch_sequence(genome, mapping["chr"], mapping["start"], mapping["end"], mapping["strand"])
+    return seq
 
+def fetch_mapping_rna(genomes_rule, mapping):
+    genome = genomes_rule.replace("%",mapping["map_build"])
+    ranges = get_rna_ranges_for_mapping(mapping)
+    rna = fetch_spliced_sequence( genome, ranges )
+    rna = rna.upper().replace("T","U")
+    return rna
 
-def fetch_gene_sequences(genomes_rule, results):
+def fetch_mapping_protein(genomes_rule, mapping):
+    genome = genomes_rule.replace("%",mapping["map_build"])
+    pranges = get_coding_ranges_for_mapping(mapping)
+    cds = fetch_spliced_sequence( genome, pranges )
+    return codons.translateAll( cds )
+    
+def fetch_protein_for_genes(genomes_rule, results):
     for rfsq in results:
         for mapping in rfsq["mappings"]:
-            mapping["sequence"] = fetch_mapping_sequence( genome, ranges )
+            mapping["protein"] = fetch_mapping_protein( genomes_rule, mapping )
     return results
+
+def fetch_rna_for_genes(genomes_rule, results):
+    for rfsq in results:
+        for mapping in rfsq["mappings"]:
+            mapping["rna"] = fetch_mapping_rna( genomes_rule, mapping )
+    return results
+
+def fetch_dna_for_genes(genomes_rule, results):
+    for rfsq in results:
+        for mapping in rfsq["mappings"]:
+            mapping["dna"] = fetch_mapping_dna( genomes_rule, mapping )
+    return results
+

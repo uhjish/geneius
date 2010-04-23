@@ -38,7 +38,7 @@ try:
     from libgeneius.whereami import *
     from libgeneius.lookup import *
     from libgeneius.sequence import *
-    from libgeneius.translate import getCodonFromSequence
+    from libgeneius.translate import *
 except GeneiusError,ge:
     Fatal_Error(str(ge))
 
@@ -96,7 +96,7 @@ try:
     genomes_rule = settings.GENOME_PATH
     form = cgi.FieldStorage()
     action = get_required_var("action",form,return_obj)
-    allowable_actions = ["search","lookup","whereami","sequence","codon"]
+    allowable_actions = ["search","lookup","whereami","sequence","codon","mutate"]
     if not action in allowable_actions:
         returnobj_error(return_obj,"action must be of %s" % allowable_actions)
 
@@ -133,8 +133,15 @@ try:
             returnobj_error(return_obj,"problem decoding refseq_ids should be json array")
         try:
             dbresults = lookup_refseq_with_utrs(refids,organism,geneius_db)
-            if sequence and (sequence == "1" or sequence.upper().startswith("T") ):
-                dbresults = fetch_gene_sequences(genomes_rule, dbresults)
+            if sequence:
+                sequence = json.loads(sequence)
+                sequence = map( lambda x: x.lower(), sequence )
+                if "dna" in sequence:
+                    dbresults = fetch_dna_for_genes(genomes_rule, dbresults)
+                if "rna" in sequence:
+                    dbresults = fetch_rna_for_genes(genomes_rule, dbresults)
+                if "protein" in sequence:
+                    dbresults = fetch_protein_for_genes(genomes_rule, dbresults)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results = dbresults
@@ -173,10 +180,19 @@ try:
     elif action == "codon":
         uid = get_required_var("uid", form, return_obj)
         pos = int(get_required_var("pos", form, return_obj))
-        genomic = get_optional_var("genomic", form, return_obj)
         try:
             mapping = get_refseq_by_uid(uid,geneius_db)
             res = getCodonFromSequence(genomes_rule, mapping, pos)
+        except Exception, pe:
+            returnobj_error(return_obj,str(pe))
+        return_obj.results=res
+    elif action == "mutate":
+        uid = get_required_var("uid", form, return_obj)
+        pos = int(get_required_var("pos", form, return_obj))
+        mutalleles = json.loads( get_required_var("alleles", form, return_obj) )
+        try:
+            mapping = get_refseq_by_uid(uid,geneius_db)
+            res = getMutationEffects(genomes_rule, mapping, pos, mutalleles)
         except Exception, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results=res
