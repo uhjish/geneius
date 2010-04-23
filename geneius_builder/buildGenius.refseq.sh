@@ -42,5 +42,7 @@ echo "Building getting sequences & headers"
 #cd ..
 #zcat tmp_fa/*.rna.fna.gz | grep -e'^>' | sed -e 's/^>gi|//' -e 's/ref|//' | tr "|" "\t" | mawk 'BEGIN{FS="\t"; OFS="\t"}{gsub(/\.[0-9]+/,"",$2); print $0;}' >refDesc
 
-cut -f 2 spList | xargs -I % mkdir /bio/ucsc/%
+#cut -f 2 spList | xargs -I % mkdir /bio/ucsc/%
+
+cut -f 2 spList | xargs -I % ./fetch2bit.sh %
 

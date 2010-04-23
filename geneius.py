@@ -96,7 +96,7 @@ try:
     genomes_rule = settings.GENOME_PATH
     form = cgi.FieldStorage()
     action = get_required_var("action",form,return_obj)
-    allowable_actions = ["search","lookup","whereami","sequence","codon","mutate"]
+    allowable_actions = ["search","lookup","whereami","sequence","codon","mutate","getmapping"]
     if not action in allowable_actions:
         returnobj_error(return_obj,"action must be of %s" % allowable_actions)
 
@@ -111,21 +111,11 @@ try:
         if len(dbresults) < 1:
             returnobj_error(return_obj,"No Matches Found for %s" % qsymbol)
         return_obj.results = dbresults
-
     elif action=="lookup":
         organism=get_optional_var("organism",form,return_obj)
         if not organism:
             organism="%"
         sequence=get_optional_var("sequence",form,return_obj)
-        #with_definition=get_optional_var("with_definition",form,return_obj)
-        #if str(with_sequence).upper().startswith("T"):
-        #    with_sequence=True
-        #else:
-        #    with_sequence = False
-        #if str(with_definition).upper().startswith("T"):
-        #    with_definition=True
-        #else:
-        #    with_definition=False
         jsonrefids = get_required_var("refseq_ids",form,return_obj)
         try:
             refids = json.loads(jsonrefids)
@@ -142,6 +132,23 @@ try:
                     dbresults = fetch_rna_for_genes(genomes_rule, dbresults)
                 if "protein" in sequence:
                     dbresults = fetch_protein_for_genes(genomes_rule, dbresults)
+        except MySQLdb.ProgrammingError, pe:
+            returnobj_error(return_obj,str(pe))
+        return_obj.results = dbresults
+    elif action=="getmapping":
+        uid = get_required_var("uid", form, return_obj)
+        sequence=get_optional_var("sequence",form,return_obj)
+        try:
+            dbresults = get_refseq_by_uid(uid,geneius_db)
+            if sequence:
+                sequence = json.loads(sequence)
+                sequence = map( lambda x: x.lower(), sequence )
+                if "dna" in sequence:
+                    dbresults["dna"] = fetch_mapping_dna(genomes_rule, dbresults)
+                if "rna" in sequence:
+                    dbresults["rna"] = fetch_mapping_rna(genomes_rule, dbresults)
+                if "protein" in sequence:
+                    dbresults["protein"] = fetch_mapping_protein(genomes_rule, dbresults)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results = dbresults

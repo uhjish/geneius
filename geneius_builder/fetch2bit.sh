@@ -1,7 +1,10 @@
-if [ -f "/bio/ucsc/$1/$1.2bit" ]
-then
-    echo "$1 2bit exists, skipping\n"
-else
-    echo "Fetching $1.2bit\n"
-    `curl ftp://hgdownload.cse.ucsc.edu/gbdb/$1/$1.2bit >/bio/ucsc/$1/$1.2bit`
+#!/usr/bin/env bash
+genome=$1
+echo $genome
+#if [ -f "/bio/ucsc/${genome}/${genome}.2bit" ]
+#then
+#    echo ${genome} 2bit exists, skipping
+#else
+    echo "Fetching ${genome}.2bit to /bio/ucsc/${genome}/${genome}.2bit"
+    `curl ftp://hgdownload.cse.ucsc.edu/gbdb/${genome}/${genome}.2bit >/bio/ucsc/${genome}/${genome}.2bit`
 fi

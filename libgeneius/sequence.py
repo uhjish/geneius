@@ -15,7 +15,10 @@ def reverse_complement( s ):
     return "".join( reversed_s )
 
 def fetch_sequence(genome, chrom, start, end, strand=1):
-    twobitfile = bx.seq.twobit.TwoBitFile( file( genome ) )
+    try:
+        twobitfile = bx.seq.twobit.TwoBitFile( file( genome ) )
+    except:
+        return "error: sequence file "+ genome +" unavailable; "
     s = twobitfile[chrom][start:end]
     if strand < 0 or strand == "-":
         return reverse_complement(s)
@@ -69,6 +72,8 @@ def fetch_mapping_rna(genomes_rule, mapping):
     genome = genomes_rule.replace("%",mapping["map_build"])
     ranges = get_rna_ranges_for_mapping(mapping)
     rna = fetch_spliced_sequence( genome, ranges )
+    if rna.startswith("error"):
+        return rna
     rna = rna.upper().replace("T","U")
     return rna
 
@@ -76,6 +81,8 @@ def fetch_mapping_protein(genomes_rule, mapping):
     genome = genomes_rule.replace("%",mapping["map_build"])
     pranges = get_coding_ranges_for_mapping(mapping)
     cds = fetch_spliced_sequence( genome, pranges )
+    if cds.startswith("error"):
+        return cds
     return codons.translateAll( cds )
     
 def fetch_protein_for_genes(genomes_rule, results):

@@ -15,6 +15,8 @@ def getMutationEffects(genomes_rule, map, pos, newbases):
             effect = ["insertion", "in frame"]
         elif newbase == original["allele"]:
             effect = ["reference"]
+            ncod = original["codon"]
+            naa = original["aa"]
         elif len(newbase) == 1:
             effect = ["SNP"]
             ofs = original["offset"]
@@ -58,7 +60,9 @@ def getCodonFromSequence(genomes_rule, map, pos):
         codon =  seq[pos-ofst-1:pos-ofst+2]
         aa = codons.translate(codon)
     base = seq[pos-1]
-    result = {  "allele":base,
+    result = {  "mapping_uid": map["uid"],
+                "pos":pos,
+                "allele":base,
                 "codon":codon,
                 "aa":aa, 
                 "offset":ofst }
