@@ -100,7 +100,7 @@ def whereami_inside(build, chr, pos, geneius_db):
                 "map_build":entry[f_build]
                 }
             inside.append(inside_exon)
-        if last_exon_end != -1 and last_exon_end <= pos and entry[6] >=pos:
+        if last_exon_end != -1 and last_exon_end <= pos and entry[f_exstart] >=pos:
             inside_intron = {
                 "uid":entry[f_uid],
                 "chr":entry[f_chr],
