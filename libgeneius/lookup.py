@@ -49,7 +49,6 @@ def lookup_refseq(symbols,org,geneius_db):
     rutr=[]
     cds=[]
     left=True
-
     for entry in geneius_db.query(query):
         new_exon = {
             "number":entry[f_exNum],
