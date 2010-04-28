@@ -1,5 +1,5 @@
 import codons
-from libgeneius.error import GeneiusError
+from error import GeneiusError
 try:
     import bx.seq.twobit
 except:
