@@ -44,5 +44,7 @@ echo "Building getting sequences & headers"
 
 #cut -f 2 spList | xargs -I % mkdir /bio/ucsc/%
 
-cut -f 2 spList | xargs -I % ./fetch2bit.sh %
+#cut -f 2 spList | xargs -I % ./fetch2bit.sh %
+
+curl ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz | zcat | grep -v -e'^#' 
 
