@@ -34,7 +34,7 @@ from libgeneius.error import GeneiusError
 try:
     from gsettings import settings
     from libgeneius.mysql import GeneiusDb
-    from libgeneius.search import search_for_refseq
+    from libgeneius.search import *
     from libgeneius.whereami import *
     from libgeneius.lookup import *
     from libgeneius.sequence import *
@@ -96,7 +96,7 @@ try:
     genomes_rule = settings.GENOME_PATH
     form = cgi.FieldStorage()
     action = get_required_var("action",form,return_obj)
-    allowable_actions = ["search","lookup","whereami","sequence","codon","mutate","getmapping"]
+    allowable_actions = ["search","lookup","whereami","sequence","codon","mutate","getmapping","pathway"]
     if not action in allowable_actions:
         returnobj_error(return_obj,"action must be of %s" % allowable_actions)
 
@@ -105,6 +105,17 @@ try:
         organism = get_required_var("organism",form,return_obj)
         try:
             dbresults = search_for_refseq(qsymbol,organism,geneius_db)
+        except MySQLdb.ProgrammingError, pe:
+            returnobj_error(return_obj,str(pe))
+
+        if len(dbresults) < 1:
+            returnobj_error(return_obj,"No Matches Found for %s" % qsymbol)
+        return_obj.results = dbresults
+    elif action == "pathway":
+        qsymbol = get_required_var("qsymbol",form,return_obj)
+        organism = get_required_var("organism",form,return_obj)
+        try:
+            dbresults = search_by_annotation(qsymbol,organism,geneius_db)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
 

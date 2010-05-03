@@ -45,10 +45,99 @@ def search_for_refseq(qsymbol,organism,geneius_db):
             good.append(result)
         else:
             ok.append(result)
-
+    
     if len(best)>0:
-        return best
+        retval = best
     elif len(good)>0:
-        return good
+        retval = good
+    else:
+        retval = ok
 
-    return ok
+    retval = fetch_annotations(retval, geneius_db)
+    return retval
+
+def fetch_annotations(results, geneius_db):
+    res_idx = {}
+    for result in results:
+        res_idx[str(result["entrez_id"])]=result
+        result["annotation"] = {}
+    query = "select distinct anno.entrez_id,src.source,term.term "
+    query += " from tbl_anno as anno " 
+    query += " inner join tbl_anno_src as src on anno.src_id = src.src_id "
+    query += " inner join tbl_anno_term as term on anno.term_id = term.term_id "
+    query += " where anno.entrez_id in(\'%s\') " % "','".join( list(res_idx.keys()) )
+    query += " order by anno.entrez_id,src.source;"
+
+    for entry in geneius_db.query(query):
+        entrez = str(entry[0])
+        if not res_idx[ entrez ]["annotation"].has_key( entry[1] ):
+            res_idx[ entrez ]["annotation"][ entry[1] ] = []
+        res_idx[ entrez ]["annotation"][ entry[1] ].append( entry[2] )
+
+    return results
+
+def search_by_annotation(qsymbol,organism,geneius_db):
+
+    query = "select distinct entrez.entrez_id,entrez.type,entrez.official_symbol, "
+    query += "entrez.official_gene_name,entrez.other_id,entrez.other_symbols,"
+    query += "gref.refseq_rna, species.name, "
+    query += "source.source, term.term "
+    query += "from tbl_entrez_xref as entrez inner "
+    query += "join tbl_gene_refseq_new as gref on "
+    query += "gref.entrez_id=entrez.entrez_id inner join tbl_species as species on "
+    query += "entrez.species=species.tax_id "
+    query += " inner join tbl_anno as anno on entrez.entrez_id = anno.entrez_id "
+    query += " inner join tbl_anno_src as source on anno.src_id = source.src_id "
+    query += " inner join tbl_anno_term as term on anno.term_id = term.term_id "
+    query += "where term.term like \"%%%s%%\" " % qsymbol
+    query += "and species.name like \"%%%s%%\" and gref.refseq_rna IS NOT NULL " % organism
+    query += "order by source.source, term.term, entrez.entrez_id;"
+
+    res_set = {}
+    results = []
+    last_eid = None
+    last_source = None
+    last_term = None
+    for entry in geneius_db.query(query):
+        if not res_set.has_key(entry[8]):
+            res_set[entry[8]] = {}
+        if not res_set[entry[8]].has_key(entry[9]):
+            res_set[entry[8]][entry[9]] = []
+            
+        if entry[0] == last_eid:
+            res_set[entry[8]][entry[9]][-1]['refseq_ids'].append(entry[6])
+        else:
+            res_set[entry[8]][entry[9]].append({
+                    "entrez_id":entry[0],
+                    "type":entry[1],
+                    "official_symbol":entry[2],
+                    "official_gene_name":entry[3],
+                    "other_id":entry[4],
+                    "other_symbols":entry[5],
+                    "refseq_ids":[entry[6]],
+                    "species":entry[7],
+                    })
+            last_eid = entry[0]
+
+
+    #filter results                                                                                                                                                               
+    #best = []
+    #good = []
+    #ok = []
+    #for result in results:
+    #    if result['official_symbol'].lower() == qsymbol.lower():
+    #        best.append(result)
+    #    elif qsymbol.lower() in [i.lower() for i in result['other_symbols'].split("|")]:
+    #        good.append(result)
+    #    else:
+    #        ok.append(result)
+    #
+    #if len(best)>0:
+    #    retval = best
+    #elif len(good)>0:
+    #    retval = good
+    #else:
+    #    retval = ok
+
+    #retval = fetch_annotations(retval, geneius_db)
+    return res_set
