@@ -1,10 +1,10 @@
 import codons
 from error import GeneiusError
 try:
-    import bx.seq.twobit
-except:
-    pass
-    #raise GeneiusError("Missing Package: bx / bx-python / bx-omelogic http://bitbucket.org/james_taylor/bx-python")
+    import seq.twobit
+    #import bx.seq.twobit
+except Exception, pe:
+    raise GeneiusError(str(pe))
 
 def reverse_complement( s ):
     complement_dna = {"A":"T", "T":"A", "C":"G", "G":"C", "a":"t", "t":"a", "c":"g", "g":"c", "N":"N", "n":"n" }
@@ -16,9 +16,9 @@ def reverse_complement( s ):
 
 def fetch_sequence(genome, chrom, start, end, strand=1):
     try:
-        twobitfile = bx.seq.twobit.TwoBitFile( file( genome ) )
-    except:
-        return "error: sequence file "+ genome +" unavailable; "
+        twobitfile = seq.twobit.TwoBitFile( file( genome ) )
+    except Exception, pe:
+        return "error: sequence file "+ genome +" unavailable; " + str(pe)
     s = twobitfile[chrom][start:end]
     if strand < 0 or strand == "-":
         return reverse_complement(s)
