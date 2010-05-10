@@ -1,4 +1,4 @@
-from libgeneius.error import GeneiusError
+from error import GeneiusError
 try:
     import MySQLdb
 except:
