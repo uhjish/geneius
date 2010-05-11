@@ -43,6 +43,7 @@ def getCodonFromSequence(genomes_rule, map, pos):
     if pos < 1 or pos > len(seq):
         raise Exception( "translate.py:getCodonFromSequence - pos out of range [1,len(sequence)]")
     ofst=None
+    cod_num = None
     len5=0
     for lexon in map["utr5"]:
         len5 += lexon[1]-lexon[0]
