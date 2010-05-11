@@ -56,7 +56,8 @@ def getCodonFromSequence(genomes_rule, map, pos):
         codon= "utr3"
         aa=None
     else:
-        ofst = (pos-len5-1) % 3 
+        ofst = (pos-len5-1) % 3
+	cod_num = (pos-len5-1) / 3 
         codon =  seq[pos-ofst-1:pos-ofst+2]
         aa = codons.translate(codon)
     base = seq[pos-1]
@@ -65,5 +66,6 @@ def getCodonFromSequence(genomes_rule, map, pos):
                 "allele":base,
                 "codon":codon,
                 "aa":aa, 
+		"aa_pos":cod_num,
                 "offset":ofst }
     return result
