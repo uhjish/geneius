@@ -58,7 +58,7 @@ def getCodonFromSequence(genomes_rule, map, pos):
         aa=None
     else:
         ofst = (pos-len5-1) % 3
-	cod_num = (pos-len5-1) / 3 
+	cod_num = (pos-len5-1) / 3 + 1 
         codon =  seq[pos-ofst-1:pos-ofst+2]
         aa = codons.translate(codon)
     base = seq[pos-1]
