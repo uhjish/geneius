@@ -21,16 +21,21 @@ def getMutationEffects(genomes_rule, map, pos, newbases):
             effect = ["SNP"]
             ofs = original["offset"]
             ocod = original["codon"]
-            ncod = ocod[0:ofs] + newbase + ocod[ofs+1:3]
-            naa = codons.translate(ncod)
-            if naa == original["aa"]:
-                effect.append("synonymous")
-            elif original["aa"] == "*":
-                effect.append("runon")
-            elif naa == "*":
-                effect.append("nonsense")
+            if ocod.startswith("utr"):
+                effect.append(ocod)
+                ncod=ocod
+                naa = original["aa"]
             else:
-                effect.append("missense")
+                ncod = ocod[0:ofs] + newbase + ocod[ofs+1:3]
+                naa = codons.translate(ncod)
+                if naa == original["aa"]:
+                    effect.append("synonymous")
+                elif original["aa"] == "*":
+                    effect.append("runon")
+                elif naa == "*":
+                    effect.append("nonsense")
+                else:
+                    effect.append("missense")
         mutations.append( { "allele" : newbase,
                             "codon" : ncod,
                             "aa" : naa,
