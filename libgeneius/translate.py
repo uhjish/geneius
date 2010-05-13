@@ -22,7 +22,7 @@ def getMutationEffects(genomes_rule, map, pos, newbases):
             ofs = original["offset"]
             ocod = original["codon"]
             if ocod.startswith("utr"):
-                effect.append["untranslated"]
+                effect.append("untranslated")
                 ncod=ocod
                 naa = original["aa"]
             else:
