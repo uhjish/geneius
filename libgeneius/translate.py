@@ -1,5 +1,56 @@
 import codons
 from sequence import fetch_mapping_rna 
+from sequence import fetch_sequence 
+
+leftSplice = { "+": "ss5", "-": "ss3" }
+rightSplice = { "+": "ss3", "-": "ss5" }
+leftGenic = {"+": "upstream", "-": "downstream"}
+rightGenic = {"+": "downstream", "-": "upstream"}
+
+def getGenomicMutationEffects(genomes_rule, map, chr, start, end, newbases):
+    genome = genomes_rule.replace("%", map["map_build"])
+    allele = fetch_sequence(genome, chr, start, end, map["strand"])
+    result = {  "mapping_uid": map["uid"],
+                "pos":None,
+                "allele":allele,
+                "codon":None,
+                "aa":None, 
+		        "aa_pos":None,
+                "offset":None,
+             }
+    mutations = []
+    if chr != map["chr"]:
+        effect=["off-chromosome"]
+    elif end <= map["start"]:
+        effect=[leftGenic[map["strand"]]]
+    elif start >= map["end"]:
+        effect=[rightGenic[map["strand"]]]
+    elif end - start > 1:
+        effect=["complex"]
+    else:
+        #check exons
+        mrna_pos = 0
+        for exon in map["exons"]:
+            if start >= exon["start"] and end <= exon["end"]:
+                mrna_pos += end - exon["start"]
+                if map["strand"] == "-":
+                    mrna_pos = map["mrna_length"]-mrna_pos+1
+                return getMutationEffects(genomes_rule, map, mrna_pos, newbases)
+            elif end == exon["start"]:
+                effect=leftSplice[map["strand"]]
+                break
+            elif start == exon["end"]:
+                effect=rightSplice[map["strand"]]
+                break
+            else:
+                mrna_pos += exon["end"] - exon["start"]
+    for nb in newbases:
+        mutations.append( { "allele" : nb,
+                            "codon" : None,
+                            "aa" : None,
+                            "effect" : effect } )
+    result["mutations"]=mutations
+    return result
 
 def getMutationEffects(genomes_rule, map, pos, newbases):
     original = getCodonFromSequence(genomes_rule, map, pos)
@@ -43,6 +94,7 @@ def getMutationEffects(genomes_rule, map, pos, newbases):
     original["mutations"] = mutations
     return original
 
+
 def getCodonFromSequence(genomes_rule, map, pos):
     seq = fetch_mapping_rna(genomes_rule, map)
     if pos < 1 or pos > len(seq):
@@ -72,6 +124,6 @@ def getCodonFromSequence(genomes_rule, map, pos):
                 "allele":base,
                 "codon":codon,
                 "aa":aa, 
-		"aa_pos":cod_num,
+		        "aa_pos":cod_num,
                 "offset":ofst }
     return result

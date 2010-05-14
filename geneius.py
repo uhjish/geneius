@@ -206,11 +206,18 @@ try:
         return_obj.results=res
     elif action == "mutate":
         uid = get_required_var("uid", form, return_obj)
-        pos = int(get_required_var("pos", form, return_obj))
         mutalleles = json.loads( get_required_var("alleles", form, return_obj) )
+        genomic = get_required_var("genomic", form, return_obj)
         try:
             mapping = get_refseq_by_uid(uid,geneius_db)
-            res = getMutationEffects(genomes_rule, mapping, pos, mutalleles)
+            if genomic.upper().startswith("T") or genomic == "1":
+                chr = get_required_var("chr", form, return_obj)
+                start = int(get_required_var("start", form, return_obj))
+                end = int(get_required_var("end",form,return_obj))
+                res = getGenomicMutationEffects(genomes_rule, mapping, chr, start, end, mutalleles)
+            else:
+                pos = int(get_required_var("pos", form, return_obj))
+                res = getMutationEffects(genomes_rule, mapping, pos, mutalleles)
         except Exception, pe:
             returnobj_error(return_obj,str(pe))
         return_obj.results=res
