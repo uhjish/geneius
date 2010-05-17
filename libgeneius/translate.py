@@ -19,6 +19,7 @@ def getGenomicMutationEffects(genomes_rule, map, chr, start, end, newbases):
                 "offset":None,
              }
     mutations = []
+    effect = []
     if chr != map["chr"]:
         effect=["off-chromosome"]
     elif end <= map["start"]:
