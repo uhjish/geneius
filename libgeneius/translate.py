@@ -45,6 +45,9 @@ def getGenomicMutationEffects(genomes_rule, map, chr, start, end, newbases):
                 break
             else:
                 mrna_pos += exon["end"] - exon["start"]
+    if not effect:
+        #intronic
+        effect = ["intronic"]
     for nb in newbases:
         mutations.append( { "allele" : nb,
                             "codon" : None,
