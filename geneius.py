@@ -56,7 +56,7 @@ if settings.DEBUG:
 class ReturnObj:
     def __init__(self):
         self.usage = None
-        self.results = {}
+        self.results = None
         self.error = None
     
     def to_json(self):
@@ -67,8 +67,9 @@ class ReturnObj:
         return json.dumps(obj)
 
 def print_return(robj):
+    ret_str = robj.to_json()
     print "Content-Type: application/json\n"
-    print robj.to_json()
+    print ret_str
     sys.exit()
 
 def returnobj_error(obj,error):

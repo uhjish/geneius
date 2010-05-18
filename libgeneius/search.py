@@ -3,16 +3,17 @@ def search_for_refseq(qsymbol,organism,geneius_db):
 
     query = "select entrez.entrez_id,entrez.type,entrez.official_symbol,"
     query += "entrez.official_gene_name,entrez.other_id,entrez.other_symbols,"
-    query += "gref.refseq_rna, species.name from tbl_entrez_xref as entrez inner "
-    query += "join tbl_gene_refseq_new as gref on "
-    query += "gref.entrez_id=entrez.entrez_id inner join tbl_species as species on "
+    query += "gref.refseq_rna, species.name from tbl_entrez_xref as entrez "
+    query += "left join tbl_species as species on "
     query += "entrez.species=species.tax_id "
+    query += "left join tbl_gene_refseq as gref on "
+    query += "gref.entrez_id=entrez.entrez_id "
     query += "where (entrez.entrez_id like \"%%%s%%\" " % qsymbol
     query += "or entrez.official_symbol like \"%%%s%%\" or entrez.official_gene_name "  % qsymbol
     query += "like \"%%%s%%\" or entrez.other_id like \"%%%s%%\" or entrez.other_symbols " %(qsymbol,qsymbol)
     query += "like \"%%%s%%\" or entrez.other_gene_names like \"%%%s%%\" " %(qsymbol,qsymbol)
     query += "or gref.refseq_rna like \"%%%s%%\" or gref.refseq_protein like \"%%%s%%\") "%(qsymbol,qsymbol)
-    query += "and species.name like \"%%%s%%\" and gref.refseq_rna IS NOT NULL " % organism
+    query += "and species.name like \"%%%s%%\" " % organism
     query += "order by entrez.entrez_id;"
 
     results = []
@@ -52,7 +53,6 @@ def search_for_refseq(qsymbol,organism,geneius_db):
         retval = good
     else:
         retval = ok
-
     return retval
 
 def fetch_annotations(results, geneius_db):
