@@ -100,13 +100,17 @@ def search_by_annotation(qsymbol,organism,geneius_db):
     last_term = None
     for entry in geneius_db.query(query):
         if not res_set.has_key(entry[8]):
+            #add source to hashes
             res_set[entry[8]] = {}
         if not res_set[entry[8]].has_key(entry[9]):
+            #add term to source hash
             res_set[entry[8]][entry[9]] = []
             
-        if entry[0] == last_eid:
+        if last_source == entry[8] and last_term == entry[9] and entry[0] == last_eid:
+            #same source term and gene so just add the refseq
             res_set[entry[8]][entry[9]][-1]['refseq_ids'].append(entry[6])
         else:
+            #add new gene
             res_set[entry[8]][entry[9]].append({
                     "entrez_id":entry[0],
                     "type":entry[1],
@@ -118,6 +122,8 @@ def search_by_annotation(qsymbol,organism,geneius_db):
                     "species":entry[7],
                     })
             last_eid = entry[0]
+            last_source = entry[8]
+            last_term = entry[9]
 
 
     #filter results                                                                                                                                                               
