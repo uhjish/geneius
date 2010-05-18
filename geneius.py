@@ -103,8 +103,12 @@ try:
     if action == "search":
         qsymbol = get_required_var("qsymbol",form,return_obj)
         organism = get_required_var("organism",form,return_obj)
+        annotate = get_optional_var("annotate",form,return_obj)
         try:
             dbresults = search_for_refseq(qsymbol,organism,geneius_db)
+            if annotate:
+                if annotate.upper().startswith("T") or annotate.startswith("1"):
+                    dbresults = fetch_annotations(dbresults, geneius_db)
         except MySQLdb.ProgrammingError, pe:
             returnobj_error(return_obj,str(pe))
 

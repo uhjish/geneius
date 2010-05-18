@@ -53,7 +53,6 @@ def search_for_refseq(qsymbol,organism,geneius_db):
     else:
         retval = ok
 
-    retval = fetch_annotations(retval, geneius_db)
     return retval
 
 def fetch_annotations(results, geneius_db):
