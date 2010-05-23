@@ -11,10 +11,10 @@ echo "Parsing Entrez Gene table"
 
 
 echo "Downloading Entrez to Refseq mappings"
-#./aspera/getNCBI.sh ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/gene2refseq.gz
+./aspera/getNCBI.sh ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz
 
 echo "Parsing Entrez to Refseq mappings"
-#zcat gene2refseq.gz | gawk 'BEGIN{FS="\t";OFS="\t";}(NR>1){print $2,$3,$4,$6}' |  sed -e's/-/NULL/g' | sed -e's/\.[0-9]*//g' >tbl_gene_refseq
+zcat gene2refseq.gz | mawk 'BEGIN{FS="\t";OFS="\t";}(NR>1 && ($4 !="-" || $6 !="-") ){print $2,$3,$4,$6}' |  sed -e's/-/NULL/g' | sed -e's/\.[0-9]*//g' | uniq  >tbl_gene_refseq
 
 
 #get species master list

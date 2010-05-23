@@ -1,9 +1,10 @@
 
 use geneius;
 
-drop table if exists tbl_entrez_xref;
-drop table if exists tbl_entrez_refseq;
+-- drop table if exists tbl_entrez_xref;
+drop table if exists tbl_gene_refseq;
 
+/*
 create table tbl_entrez_xref(
 	entrez_id INT NOT NULL,
 	PRIMARY KEY (entrez_id),
@@ -20,12 +21,15 @@ create table tbl_entrez_xref(
 	other_gene_names TEXT
 	fulltext index (other_gene_names)	);
 
+*/
 
 create table tbl_gene_refseq(
-	id int not null autoincrement,
-	primary key (id),
+	entrez_id int not null,
+    index entrez_idx(entrez_id),
 	status varchar(50),
 	refseq_rna varchar(50),
 	refseq_protein varchar(50),
 	index names_idx (refseq_rna, refseq_protein)	);
 
+-- load data local infile "tbl_entrez_xref" into table tbl_entrez_xref;
+load data local infile "tbl_gene_refseq" into table tbl_gene_refseq;

@@ -14,14 +14,12 @@ def search_for_refseq(qsymbol,organism,geneius_db):
     query += "like \"%%%s%%\" or entrez.other_gene_names like \"%%%s%%\" " %(qsymbol,qsymbol)
     query += "or gref.refseq_rna like \"%%%s%%\" or gref.refseq_protein like \"%%%s%%\") "%(qsymbol,qsymbol)
     query += "and species.name like \"%%%s%%\" " % organism
-    query += "order by entrez.entrez_id;"
+    query += "order by entrez.entrez_id, gref.refseq_rna;"
 
     results = []
     last_eid = None
     for entry in geneius_db.query(query):
-        if entry[0] == last_eid:
-            results[-1]['refseq_ids'].append(entry[6])
-        else:
+        if entry[0] != last_eid:
             results.append({
                     "entrez_id":entry[0],
                     "type":entry[1],
@@ -29,10 +27,12 @@ def search_for_refseq(qsymbol,organism,geneius_db):
                     "official_gene_name":entry[3],
                     "other_id":entry[4],
                     "other_symbols":entry[5],
-                    "refseq_ids":[entry[6]],
+                    "refseq_ids":[],
                     "species":entry[7],
                     })
-            last_eid = entry[0]
+        if entry[6]:
+            results[-1]['refseq_ids'].append(entry[6])
+        last_eid = entry[0]
 
 
     #filter results                                                                                                                                                               
