@@ -1,5 +1,5 @@
 
-def search_for_refseq(qsymbol,organism,geneius_db):
+def search_for_refseq(qsymbol,organism,geneius_db,searchfull):
 
     query = "select entrez.entrez_id,entrez.type,entrez.official_symbol,"
     query += "entrez.official_gene_name,entrez.other_id,entrez.other_symbols,"
@@ -34,7 +34,8 @@ def search_for_refseq(qsymbol,organism,geneius_db):
             results[-1]['refseq_ids'].append(entry[6])
         last_eid = entry[0]
 
-
+    if searchfull:
+        return results
     #filter results                                                                                                                                                               
     best = []
     good = []

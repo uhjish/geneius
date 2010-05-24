@@ -105,8 +105,13 @@ try:
         qsymbol = get_required_var("qsymbol",form,return_obj)
         organism = get_required_var("organism",form,return_obj)
         annotate = get_optional_var("annotate",form,return_obj)
+        fullsearch = get_optional_var("fullsearch", form,return_obj)
+        searchfull = False
+        if fullsearch:
+            if fullsearch.upper().startswith("T") or fullsearch.startswith("1"):
+                searchfull = True
         try:
-            dbresults = search_for_refseq(qsymbol,organism,geneius_db)
+            dbresults = search_for_refseq(qsymbol,organism,geneius_db,searchfull)
             if annotate:
                 if annotate.upper().startswith("T") or annotate.startswith("1"):
                     dbresults = fetch_annotations(dbresults, geneius_db)
