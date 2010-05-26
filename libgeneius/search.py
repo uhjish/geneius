@@ -90,7 +90,7 @@ def search_by_annotation(qsymbol,organism,geneius_db):
     query += " inner join tbl_anno_src as source on anno.src_id = source.src_id "
     query += " inner join tbl_anno_term as term on anno.term_id = term.term_id "
     query += "where term.term like \"%%%s%%\" " % qsymbol
-    query += "and species.name like \"%%%s%%\" and gref.refseq_rna IS NOT NULL " % organism
+    query += "and ( species.name like \"%%%s%%\" or species.build like \"%%%s%%\") and gref.refseq_rna IS NOT NULL " % (organism,organism)
     query += "order by source.source, term.term, entrez.entrez_id;"
 
     res_set = {}
