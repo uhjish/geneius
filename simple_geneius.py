@@ -56,6 +56,12 @@ class SimpleGeneius:
         if annotate:
             dbresults = fetch_annotations(dbresults, self.geneius_db)
         return dbresults
+    def get_all_refseqs_for_symbol(self,organism, qsymbol):
+        dbresults = search_for_refseq(qsymbol,organism,self.geneius_db,False)
+        refseqs = []
+        for res in dbresults:
+            refseqs.extend(res["refseq_ids"])
+        return refseqs
     def pathway(self,organism, qsymbol):
         dbresults = search_by_annotation(qsymbol,organism,self.geneius_db)
         return dbresults
