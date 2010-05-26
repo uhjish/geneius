@@ -13,7 +13,7 @@ def search_for_refseq(qsymbol,organism,geneius_db,searchfull):
     query += "like \"%%%s%%\" or entrez.other_id like \"%%%s%%\" or entrez.other_symbols " %(qsymbol,qsymbol)
     query += "like \"%%%s%%\" or entrez.other_gene_names like \"%%%s%%\" " %(qsymbol,qsymbol)
     query += "or gref.refseq_rna like \"%%%s%%\" or gref.refseq_protein like \"%%%s%%\") "%(qsymbol,qsymbol)
-    query += "and species.name like \"%%%s%%\" " % organism
+    query += "and ( species.name like \"%%%s%%\" or species.build like \"%%%s%%\" ) " % (organism,organism)
     query += "order by entrez.entrez_id, gref.refseq_rna;"
 
     results = []
