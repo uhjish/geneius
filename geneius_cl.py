@@ -31,7 +31,7 @@ except:
 #importing
 from libgeneius.error import GeneiusError
 try:
-    from gsettings import settings
+    from libgeneius import settings
     from libgeneius.mysql import GeneiusDb
     from libgeneius.search import *
     from libgeneius.whereami import *

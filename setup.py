@@ -1,9 +1,15 @@
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
+from setuptools import setup, find_packages, Extension
+module1 = Extension('libgeneius.seq._twobit',
+                    sources = ['libgeneius/seq/_twobit.c'])
+
 
 setup(
-    cmdclass = {'build_ext': build_ext},
-    ext_modules = [Extension("libgeneius/seq/_twobit", ["libgeneius/seq/_twobit.pyx"])]
-)
+
+    name='geneius',
+    version='0.0.1',
+    package_dir={'libgeneius':'libgeneius','libgeneius.seq':'libgeneius/seq'},
+    packages=['libgeneius','libgeneius.seq'],
+    scripts=['geneius_cl.py'],
+    ext_modules = [module1]
+    )
 
