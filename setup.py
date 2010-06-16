@@ -9,6 +9,7 @@ setup(
     version='0.0.1',
     package_dir={'libgeneius':'libgeneius','libgeneius.seq':'libgeneius/seq'},
     packages=['libgeneius','libgeneius.seq'],
+    py_modules=['simple_geneius'],
     scripts=['geneius_cl.py'],
     ext_modules = [module1]
     )

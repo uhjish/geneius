@@ -26,7 +26,7 @@ except:
 #importing
 from libgeneius.error import GeneiusError
 try:
-    from gsettings import settings
+    from libgeneius import settings
     from libgeneius.mysql import GeneiusDb
     from libgeneius.search import *
     from libgeneius.whereami import *
@@ -80,4 +80,5 @@ class SimpleGeneius:
         else:
             dbresults = whereami(organism, chr, pos, self.geneius_db)
         return dbresults
-
+    def get_gene_protein_lookup_table( self, org ):
+        return get_gene_protein_lookup_table( org, self.geneius_db )
