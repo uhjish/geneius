@@ -64,9 +64,9 @@ def getMutationEffects(genomes_rule, map, pos, newbases):
         naa = None
         if newbase == "-":
             effect = ["deletion", "frameshift"]
-        elif len(newbase) > 1 and len(newbase) % 3 != 0:
+        elif len(newbase) > 1 and (len(newbase)-1) % 3 != 0:
             effect = ["insertion", "frameshift"]
-        elif len(newbase) % 3 == 0:
+        elif (len(newbase)-1) % 3 == 0:
             effect = ["insertion", "in frame"]
         elif newbase == original["allele"]:
             effect = ["reference"]
