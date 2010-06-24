@@ -105,6 +105,26 @@ def get_gene_protein_lookup_table( org, geneius_db ):
 
     return ref_map
 
+def get_symbols_for_refseqs( org, geneius_db ):
+    '''
+    Get a dict of refseq gene to refseq protein mappings for the given organism 
+    @param symbols a list of refseq id's
+    @param geneius_db mysql wrapper for genenius
+    '''
+
+    query =  " select gref.refseq_rna, entrez.official_symbol from tbl_gene_refseq as gref "
+    query += " inner join tbl_entrez_xref as entrez on gref.entrez_id = entrez.entrez_id "
+    query += " inner join tbl_species as species on species.tax_id = entrez.species "
+    query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") "
+    query += " order by gref.refseq_rna, gref.refseq_protein; "
+
+    ref_map = {}
+
+    for entry in geneius_db.query(query):
+        ref_map[ entry[0] ] = entry[1]
+
+    return ref_map
+
 def lookup_refseq_with_utrs(symbols,org,geneius_db):
     res = lookup_refseq(symbols, org, geneius_db)
     for gene in res:
