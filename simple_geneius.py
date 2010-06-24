@@ -82,3 +82,5 @@ class SimpleGeneius:
         return dbresults
     def get_gene_protein_lookup_table( self, org ):
         return get_gene_protein_lookup_table( org, self.geneius_db )
+    def get_symbols_for_refseqs( self, org ):
+        return get_symbols_for_refseqs( org, self.geneius_db )
