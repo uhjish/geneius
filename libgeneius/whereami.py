@@ -133,7 +133,7 @@ def whereami_gene(build,chr,pos,geneius_db):
     exon_fields = ["exon.exon_num","exon.exon_start","exon.exon_end"]
     species_fields = ["species.name","species.build"]
     
-    query_pos = "main.chr=\""+chr+"\" and main.start <= "+pos+" and main.end >="+pos
+    query_pos = "main.chr=\""+chr+"\" and main.start <= "+str(pos)+" and main.end >="+str(pos)
     
     query = "select "+", ".join( main_fields + exon_fields + species_fields) + " from tbl_refMain as main "
     query += " inner join tbl_refExon as exon on exon.ref_id=main.id "
