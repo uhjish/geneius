@@ -7,6 +7,8 @@ rightSplice = { "+": "ss3", "-": "ss5" }
 leftGenic = {"+": "upstream", "-": "downstream"}
 rightGenic = {"+": "downstream", "-": "upstream"}
 
+
+
 def getGenomicMutationEffects(genomes_rule, map, chr, start, end, newbases):
     genome = genomes_rule.replace("%", map["map_build"])
     allele = fetch_sequence(genome, chr, start, end, map["strand"])
