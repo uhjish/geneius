@@ -1,3 +1,4 @@
+from coding import *
 def whereami_flank(build, chr, pos, direction, geneius_db):
 
     flank_limit = 100
@@ -25,7 +26,7 @@ def whereami_flank(build, chr, pos, direction, geneius_db):
         cmp_to = " main.start "
         entry_cmp = f_end
 
-    query_pos = "main.chr=\""+chr+"\" and "+cmp_to+cmp+pos+" "
+    query_pos = "main.chr=\""+chr+"\" and "+cmp_to+cmp+str(pos)+" "
 
     query = "select distinct "+ ", ".join(main_fields+species_fields) + " from tbl_refMain as main "
     query += "inner join tbl_species as species on main.map_org=species.tax_id "
@@ -60,7 +61,7 @@ def whereami_inside(build, chr, pos, geneius_db):
     species_fields = ["species.name","species.build"]
     exon_fields = ["exon.exon_num","exon.exon_start","exon.exon_end"]
 
-    query_pos = "main.chr=\""+chr+"\" and main.start <= "+pos+" and main.end >="+pos
+    query_pos = "main.chr=\""+chr+"\" and main.start <= "+str(pos)+" and main.end >="+str(pos)
 
     query = "select "+", ".join( main_fields + species_fields + exon_fields) + " from tbl_refMain as main "
     query += " inner join tbl_refExon as exon on exon.ref_id=main.id "
@@ -173,6 +174,7 @@ def whereami_gene(build,chr,pos,geneius_db):
             "end":entry[f_exEnd]
             }
         new_mapping = {
+            "uid":entry[f_uid],
             "map_org":entry[f_maporg],
             "map_build":entry[f_mapbuild],
             "chr":entry[f_chr],
@@ -197,5 +199,6 @@ def whereami_gene(build,chr,pos,geneius_db):
                         "refseq_id":entry[f_rfsq],
                         "mappings":[new_mapping]
                         })
-
+    for gene in results:
+        gene = addcoding(gene)
     return results
