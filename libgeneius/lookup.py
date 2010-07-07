@@ -16,9 +16,9 @@ def lookup_refseq(symbols,org,geneius_db):
     species_fields = ["species.name","species.build"]
     desc_fields = ["descrip.gid","descrip.description"]
     query = " select "+", ".join(main_fields+exon_fields+species_fields+desc_fields)+" from tbl_refMain as main "
-    query += " inner join tbl_refExon as exon on exon.ref_id=main.id "
-    query += " inner join tbl_species as species on species.tax_id=main.map_org ";
-    query += " inner join tbl_refDesc as descrip on main.refseq_id=descrip.refseq_id ";
+    query += " left join tbl_refExon as exon on exon.ref_id=main.id "
+    query += " left join tbl_species as species on species.tax_id=main.map_org ";
+    query += " left join tbl_refDesc as descrip on main.refseq_id=descrip.refseq_id ";
     query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") and "
     query += " ( %(refs)s ) " % {'refs':" or ".join(sids)}
     query += " order by main.refseq_id,main.id,exon_start ;"
@@ -93,8 +93,8 @@ def get_gene_protein_lookup_table( org, geneius_db ):
     '''
 
     query =  " select gref.refseq_rna, gref.refseq_protein from tbl_gene_refseq as gref "
-    query += " inner join tbl_entrez_xref as entrez on gref.entrez_id = entrez.entrez_id "
-    query += " inner join tbl_species as species on species.tax_id = entrez.species "
+    query += " left join tbl_entrez_xref as entrez on gref.entrez_id = entrez.entrez_id "
+    query += " left join tbl_species as species on species.tax_id = entrez.species "
     query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") "
     query += " order by gref.refseq_rna, gref.refseq_protein; "
 
@@ -113,10 +113,31 @@ def get_symbols_for_refseqs( org, geneius_db ):
     '''
 
     query =  " select gref.refseq_rna, entrez.official_symbol from tbl_gene_refseq as gref "
-    query += " inner join tbl_entrez_xref as entrez on gref.entrez_id = entrez.entrez_id "
-    query += " inner join tbl_species as species on species.tax_id = entrez.species "
+    query += " left join tbl_entrez_xref as entrez on gref.entrez_id = entrez.entrez_id "
+    query += " left join tbl_species as species on species.tax_id = entrez.species "
     query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") "
     query += " order by gref.refseq_rna, gref.refseq_protein; "
+
+    ref_map = {}
+
+    for entry in geneius_db.query(query):
+        ref_map[ entry[0] ] = entry[1]
+
+    return ref_map
+
+def get_symbols_for_refseqs_genomic( org, geneius_db ):
+    '''
+    Get a dict of refseq gene to refseq protein mappings for the given organism 
+    @param symbols a list of refseq id's
+    @param geneius_db mysql wrapper for genenius
+    '''
+
+    query =  " select distinct gref.refseq_rna, entrez.official_symbol from tbl_gene_refseq as gref "
+    query += " left join tbl_entrez_xref as entrez on gref.entrez_id = entrez.entrez_id "
+    query += " left join tbl_species as species on species.tax_id = entrez.species "
+    query += " left join tbl_refMain as main on main.refseq_id = gref.refseq_rna "
+    query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") "
+    query += " order by main.chr, gref.refseq_rna; "
 
     ref_map = {}
 
@@ -143,9 +164,9 @@ def get_refseq_by_uid(uid,geneius_db):
     species_fields = ["species.name","species.build"]
     desc_fields = ["descrip.gid","descrip.description"]
     query = " select "+", ".join(main_fields+exon_fields+species_fields+desc_fields)+" from tbl_refMain as main "
-    query += " inner join tbl_refExon as exon on exon.ref_id=main.id "
-    query += " inner join tbl_species as species on species.tax_id=main.map_org ";
-    query += " inner join tbl_refDesc as descrip on main.refseq_id=descrip.refseq_id ";
+    query += " left join tbl_refExon as exon on exon.ref_id=main.id "
+    query += " left join tbl_species as species on species.tax_id=main.map_org ";
+    query += " left join tbl_refDesc as descrip on main.refseq_id=descrip.refseq_id ";
     query += " where main.id="+uid
     query += " order by main.refseq_id,main.id,exon_start ;"
 
