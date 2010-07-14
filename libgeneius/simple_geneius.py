@@ -89,7 +89,7 @@ class SimpleGeneius:
         return get_gene_protein_lookup_table( org, self.geneius_db )
     def get_symbols_for_refseqs( self, org ):
         return get_symbols_for_refseqs( org, self.geneius_db )
-    def get_symbol_for_refseq( self, org ):
+    def get_symbol_for_refseq( self, refseq, org ):
         return get_symbol_for_refseq( refseq, org, self.geneius_db )
     def get_symbols_for_refseqs_genomic( self, org ):
         return get_symbols_for_refseqs( org, self.geneius_db )
