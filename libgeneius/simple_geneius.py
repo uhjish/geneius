@@ -92,4 +92,4 @@ class SimpleGeneius:
     def get_symbol_for_refseq( self, refseq, org ):
         return get_symbol_for_refseq( refseq, org, self.geneius_db )
     def get_symbols_for_refseqs_genomic( self, org ):
-        return get_symbols_for_refseqs( org, self.geneius_db )
+        return get_symbols_for_refseqs_genomic( org, self.geneius_db )

@@ -153,7 +153,7 @@ def get_symbols_for_refseqs_genomic( org, geneius_db ):
     query += " left join tbl_species as species on species.tax_id = entrez.species "
     query += " left join tbl_refMain as main on main.refseq_id = gref.refseq_rna "
     query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") "
-    query += " order by main.chr, gref.refseq_rna; "
+    query += " order by main.chr, main.start, gref.refseq_rna; "
 
     ref_map = {}
 
