@@ -76,6 +76,43 @@ def fetch_annotations(results, geneius_db):
 
     return results
 
+def fetch_annotations_by_symbols(symbols, organism, id_src, simplify, geneius_db):
+    if id_src.lower() == "refseq":
+        search_field = "gref.refseq_rna"
+    elif id_src.lower() == "entrez":
+        search_field = "entrez.entrez_id"
+    elif id_src.lower() == "symbol":
+        search_field = "entrez.official_symbol"
+    else:
+        raise Exception("In fetch_annotations_by_symbols: id_src must be one of [refseq, entrez, symbol]. Found %s!" % id_src) 
+    annos = {}
+    query = " select distinct %s,src.source,term.term " % search_field
+    query += " from tbl_entrez_xref as entrez "
+    query += " left join tbl_gene_refseq as gref on gref.entrez_id=entrez.entrez_id "
+    query += " left join tbl_species as species on entrez.species=species.tax_id "
+    query += " inner join tbl_anno as anno on entrez.entrez_id = anno.entrez_id " 
+    query += " inner join tbl_anno_src as src on anno.src_id = src.src_id "
+    query += " inner join tbl_anno_term as term on anno.term_id = term.term_id "
+    query += " where %s in(\'%s\') " % (search_field, "','".join( symbols) )
+    query += " and ( species.name like \"%%%s%%\" or species.build like \"%%%s%%\" ) " % (organism,organism)
+    query += " order by %s,src.source,term.term;" % search_field
+
+    for entry in geneius_db.query(query):
+        entrez = str(entry[0])
+        ann_src = str(entry[1])
+        ann_trm = str(entry[2])
+        if simplify:
+            if not annos.has_key(entrez):
+                annos[entrez] = []
+            annos[entrez].append( "%s|%s" % (ann_src, ann_trm) )
+        else:
+            if not annos.has_key(entrez):
+                annos[entrez] = {}
+            if not annos[entrez].has_key(ann_src):
+                annos[entrez][ann_src] = []
+            annos[entrez][ann_src].append( ann_trm )
+    return annos
+
 def search_by_annotation(qsymbol,organism,geneius_db):
 
     query = "select distinct entrez.entrez_id,entrez.type,entrez.official_symbol, "

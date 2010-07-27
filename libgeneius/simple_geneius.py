@@ -33,6 +33,7 @@ try:
     from lookup import *
     from sequence import *
     from translate import *
+    from rightwords import *
 except GeneiusError,ge:
     Fatal_Error(str(ge))
 
@@ -70,6 +71,11 @@ class SimpleGeneius:
     def pathway(self,organism, qsymbol):
         dbresults = search_by_annotation(qsymbol,organism,self.geneius_db)
         return dbresults
+    def annotate_genes(self,qsymbols, organism, id_type, simplify=False):
+        dbresults = fetch_annotations_by_symbols(qsymbols,organism,id_type,simplify,self.geneius_db)
+        return dbresults
+    def mine_annotations(self, qset, bset, organism, id_type ):
+        return mine_annotations(qset, bset, organism, id_type, self.geneius_db)
     def lookup(self,organism, refids, sequence=[]):
         dbresults = lookup_refseq_with_utrs(refids,organism,self.geneius_db)
         if "dna" in sequence:

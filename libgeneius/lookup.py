@@ -155,10 +155,10 @@ def get_symbols_for_refseqs_genomic( org, geneius_db ):
     query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") "
     query += " order by main.chr, main.start, gref.refseq_rna; "
 
-    ref_map = {}
+    ref_map = []
 
     for entry in geneius_db.query(query):
-        ref_map[ entry[0] ] = entry[1]
+        ref_map.append(entry)
 
     return ref_map
 
