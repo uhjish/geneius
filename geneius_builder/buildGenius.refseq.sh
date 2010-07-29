@@ -1,7 +1,7 @@
 
-#rm -f refGene.all.ucsc
-#rm -f refMain.txt
-#rm -f refExons.txt
+rm -f refGene.all.ucsc
+rm -f refMain.txt
+rm -f refExons.txt
 
 echo "Downloading Entrez Gene table"
 #./aspera/getNCBI.sh ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/All_Data.gene_info.gz   
@@ -11,10 +11,10 @@ echo "Parsing Entrez Gene table"
 
 
 echo "Downloading Entrez to Refseq mappings"
-./aspera/getNCBI.sh ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz
+#./aspera/getNCBI.sh ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2refseq.gz
 
 echo "Parsing Entrez to Refseq mappings"
-zcat gene2refseq.gz | mawk 'BEGIN{FS="\t";OFS="\t";}(NR>1 && ($4 !="-" || $6 !="-") ){print $2,$3,$4,$6}' |  sed -e's/-/NULL/g' | sed -e's/\.[0-9]*//g' | uniq  >tbl_gene_refseq
+#zcat gene2refseq.gz | mawk 'BEGIN{FS="\t";OFS="\t";}(NR>1 && ($4 !="-" || $6 !="-") ){print $2,$3,$4,$6}' |  sed -e's/-/NULL/g' | sed -e's/\.[0-9]*//g' | uniq  >tbl_gene_refseq
 
 
 #get species master list
@@ -22,12 +22,12 @@ echo "Getting UCSC species list"
 #curl ftp://hgdownload.cse.ucsc.edu/goldenPath/currentGenomes/ | awk '(NR>2){gsub(/\.\.\//,"",$11);print $9 "\t" $11}' >spList
 
 echo "Getting Refseq annos for all species"
-#cut -f 1 spList | xargs -I % echo 'echo % && curl ftp://hgdownload.cse.ucsc.edu/goldenPath/currentGenomes/%/database/refFlat.txt.gz | zcat | mawk "{print \"%\t\" \$0;}" >>refGene.all.ucsc'| sh 
-#$found = `wc -l refGene.all.ucsc`
+cut -f 1 spList | xargs -I % echo 'echo % && curl ftp://hgdownload.cse.ucsc.edu/goldenPath/currentGenomes/%/database/refFlat.txt.gz | zcat | mawk "{print \"%\t\" \$0;}" >>refGene.all.ucsc'| sh 
+found=`wc -l refGene.all.ucsc`
 echo "Found $found Refseq records"
 
 echo "Parsing Refseq annos"
-#sh split_ref.sh refGene.all.ucsc refMain.txt refExons.txt
+sh split_ref.sh refGene.all.ucsc refMain.txt refExons.txt
 
 echo "Updating taxon table"
 #curl ftp://hgdownload.cse.ucsc.edu/goldenPath/uniProt/database/taxon.txt.gz | zcat | cut -f 1,2 >taxon

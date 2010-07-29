@@ -105,7 +105,7 @@ def get_gene_protein_lookup_table( org, geneius_db ):
 
     return ref_map
 
-def get_symbols_for_refseqs( org, geneius_db ):
+def get_symbols_for_refseqs( org, geneius_db, withSpecies=False ):
     '''
     Get a dict of refseq gene to refseq protein mappings for the given organism 
     @param symbols a list of refseq id's
@@ -121,7 +121,10 @@ def get_symbols_for_refseqs( org, geneius_db ):
     ref_map = {}
 
     for entry in geneius_db.query(query):
-        ref_map[ entry[0] ] = entry[1]
+        if withSpecies:
+            ref_map[ entry[0] ] = (entry[2], entry[1])
+        else:
+            ref_map[ entry[0] ] = entry[1]
 
     return ref_map
 
@@ -250,3 +253,17 @@ def get_refseq_by_uid(uid,geneius_db):
         for gene in results:
            gene = addcoding(gene)
     return results[-1]["mappings"][-1]
+
+def get_available_species( geneius_db ):
+    '''
+    Get the species currently loaded from Entrez
+    '''
+
+    query =  " select distinct species.name, species.build from "
+    query += " tbl_species as species "
+
+    res = []
+    for entry in geneius_db.query(query):
+        for item in entry:
+            res.append(item)
+    return res

@@ -76,7 +76,7 @@ class SimpleGeneius:
         return dbresults
     def mine_annotations(self, qset, bset, organism, id_type ):
         return mine_annotations(qset, bset, organism, id_type, self.geneius_db)
-    def lookup(self,organism, refids, sequence=[]):
+    def lookup(self, organism, refids, sequence=[]):
         dbresults = lookup_refseq_with_utrs(refids,organism,self.geneius_db)
         if "dna" in sequence:
             dbresults = fetch_dna_for_genes(self.genomes_rule, dbresults)

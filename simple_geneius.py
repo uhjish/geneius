@@ -62,8 +62,11 @@ class SimpleGeneius:
         for res in dbresults:
             refseqs.extend(res["refseq_ids"])
         return refseqs
-    def pathway(self,organism, qsymbol):
+    def pathway_for_gene(self,organism, qsymbol):
         dbresults = search_by_annotation(qsymbol,organism,self.geneius_db)
+        return dbresults
+    def pathway_for_genes(self, organism, qsymbols):
+        dbresults = search_by_annotation_multi(qsymbols,organism,self.geneius_db)
         return dbresults
     def lookup(self,organism, refids, sequence=[]):
         dbresults = lookup_refseq_with_utrs(refids,organism,self.geneius_db)
