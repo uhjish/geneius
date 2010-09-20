@@ -94,6 +94,8 @@ class SimpleGeneius:
         else:
             dbresults = whereami(organism, chr, pos, self.geneius_db)
         return dbresults
+    def get_refseq_by_uid(self,uid):
+        return get_refseq_by_uid(uid, self.geneius_db)
     def get_gene_protein_lookup_table( self, org ):
         return get_gene_protein_lookup_table( org, self.geneius_db )
     def get_symbols_for_refseqs( self, org ):

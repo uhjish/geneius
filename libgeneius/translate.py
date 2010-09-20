@@ -65,11 +65,20 @@ def getMutationEffects(genomes_rule, map, pos, newbases):
         ncod = None
         naa = None
         if newbase == "-":
-            effect = ["deletion", "frameshift"]
+            if original["codon"].startswith("utr"):
+                effect = ["deletion","untranslated"]
+            else:
+                effect = ["deletion", "frameshift"]
         elif len(newbase) > 1 and (len(newbase)-1) % 3 != 0:
-            effect = ["insertion", "frameshift"]
+            if original["codon"].startswith("utr"):
+                effect = ["insertion","untranslated"]
+            else:
+                effect = ["insertion", "frameshift"]
         elif len(newbase) > 1 and (len(newbase)-1) % 3 == 0:
-            effect = ["insertion", "inframe"]
+            if original["codon"].startswith("utr"):
+                effect = ["insertion","untranslated"]
+            else:
+                effect = ["insertion", "inframe"]
         elif newbase == original["allele"]:
             effect = ["reference"]
             ncod = original["codon"]
