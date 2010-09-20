@@ -74,6 +74,9 @@ class SimpleGeneius:
     def annotate_genes(self,qsymbols, organism, id_type, simplify=False):
         dbresults = fetch_annotations_by_symbols(qsymbols,organism,id_type,simplify,self.geneius_db)
         return dbresults
+    def fetch_annotations_by_symbols(self, qsymbols, organism, id_type, simplify=True):
+        qannos = fetch_annotations_by_symbols( qsymbols, organism, id_type, simplify, self.geneius_db )
+        return qannos
     def mine_annotations(self, qset, bset, organism, id_type ):
         return mine_annotations(qset, bset, organism, id_type, self.geneius_db)
     def lookup(self, organism, refids, sequence=[]):
@@ -85,7 +88,7 @@ class SimpleGeneius:
         if "protein" in sequence:
             dbresults = fetch_protein_for_genes(self.genomes_rule, dbresults)
         return dbresults
-    def whereami(self,build, chr, pos, as_gene=False):
+    def whereami(self,organism, chr, pos, as_gene=False):
         if as_gene:
             dbresults = whereami_gene(organism, chr, pos, self.geneius_db)
         else:
@@ -95,6 +98,8 @@ class SimpleGeneius:
         return get_gene_protein_lookup_table( org, self.geneius_db )
     def get_symbols_for_refseqs( self, org ):
         return get_symbols_for_refseqs( org, self.geneius_db )
+    def get_symbols_for_entrez(self, org = ""):
+        return get_symbols_for_entrez(self.geneius_db, org)
     def get_symbol_for_refseq( self, refseq, org ):
         return get_symbol_for_refseq( refseq, org, self.geneius_db )
     def get_symbols_for_refseqs_genomic( self, org ):
