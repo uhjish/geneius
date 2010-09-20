@@ -124,6 +124,23 @@ def get_symbols_for_refseqs( org, geneius_db):
         ref_map[ entry[0] ] = entry[1]
     return ref_map
 
+def get_symbols_for_entrez(geneius_db, org = ""):
+    '''
+    Get a dict of refseq gene to refseq protein mappings for the given organism 
+    @param symbols a list of refseq id's
+    @param geneius_db mysql wrapper for genenius
+    '''
+
+    query =  " select entrez.entrez_id, entrez.official_symbol from tbl_entrez_xref as entrez "
+    query += " left join tbl_species as species on species.tax_id = entrez.species "
+    query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") ";
+
+    ref_map = {}
+
+    for entry in geneius_db.query(query):
+        ref_map[ entry[0] ] = entry[1]
+    return ref_map
+
 def get_refseq_mapping_tuples(geneius_db, filterStr="", limit=100):
     '''
     Get a dict of refseq gene to refseq protein mappings for the given organism 
