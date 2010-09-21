@@ -59,7 +59,11 @@ def getGenomicMutationEffects(genomes_rule, map, chr, start, end, newbases):
     return result
 
 def getMutationEffects(genomes_rule, map, pos, newbases):
-    original = getCodonFromSequence(genomes_rule, map, pos)
+    if map.has_key("rna"):
+        seq = map["rna"]
+    else:
+        seq = None
+    original = getCodonFromSequence(genomes_rule, map, pos, seq)
     mutations = []
     for newbase in newbases:
         ncod = None
@@ -110,8 +114,9 @@ def getMutationEffects(genomes_rule, map, pos, newbases):
     return original
 
 
-def getCodonFromSequence(genomes_rule, map, pos):
-    seq = fetch_mapping_rna(genomes_rule, map)
+def getCodonFromSequence(genomes_rule, map, pos, seq=None):
+    if not seq:
+        seq = fetch_mapping_rna(genomes_rule, map)
     if pos < 1 or pos > len(seq):
         raise Exception( "translate.py:getCodonFromSequence - pos out of range [1,len(sequence)]")
     ofst=None

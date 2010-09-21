@@ -94,8 +94,30 @@ class SimpleGeneius:
         else:
             dbresults = whereami(organism, chr, pos, self.geneius_db)
         return dbresults
-    def get_refseq_by_uid(self,uid):
-        return get_refseq_by_uid(uid, self.geneius_db)
+    def get_refseq_by_uid(self,uid,sequence=[]):
+        dbresults = get_refseq_by_uid(uid, self.geneius_db)
+        sequence = map( lambda x: x.lower(), sequence )
+        if "dna" in sequence:
+            dbresults["dna"] = fetch_mapping_dna(self.genomes_rule, dbresults)
+        if "rna" in sequence:
+            dbresults["rna"] = fetch_mapping_rna(self.genomes_rule, dbresults)
+        if "protein" in sequence:
+            dbresults["protein"] = fetch_mapping_protein(self.genomes_rule, dbresults)
+        return dbresults
+    def get_all_mappings_for_organism(self,org,sequence=[]):
+        dbresults = get_all_mappings_for_organism(org, self.geneius_db)
+        sequence = map( lambda x: x.lower(), sequence )
+        if "dna" in sequence:
+            dbresults = fetch_dna_for_genes(self.genomes_rule, dbresults)
+        if "rna" in sequence:
+            dbresults = fetch_rna_for_genes(self.genomes_rule, dbresults)
+        if "protein" in sequence:
+            dbresults = fetch_protein_for_genes(self.genomes_rule, dbresults)
+        res_mat = {}
+        for gene in dbresults:
+            for mapping in gene["mappings"]:
+                res_mat[mapping["uid"]] = mapping
+        return res_mat
     def get_gene_protein_lookup_table( self, org ):
         return get_gene_protein_lookup_table( org, self.geneius_db )
     def get_symbols_for_refseqs( self, org ):
