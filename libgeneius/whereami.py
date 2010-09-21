@@ -1,7 +1,7 @@
 from coding import *
 def whereami_flank(build, chr, pos, direction, geneius_db):
 
-    flank_limit = 100
+    flank_limit = 5
 
     main_fields = ["main.id","main.refseq_id","main.chr","main.strand","main.start","main.end"]
     species_fields = ["species.name","species.build"]
