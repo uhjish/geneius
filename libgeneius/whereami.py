@@ -1,7 +1,7 @@
 from coding import *
 def whereami_flank(build, chr, pos, direction, geneius_db):
 
-    flank_limit = 5
+    flank_limit = 10
 
     main_fields = ["main.id","main.refseq_id","main.chr","main.strand","main.start","main.end"]
     species_fields = ["species.name","species.build"]
@@ -28,7 +28,7 @@ def whereami_flank(build, chr, pos, direction, geneius_db):
 
     query_pos = "main.chr=\""+chr+"\" and "+cmp_to+cmp+str(pos)+" "
 
-    query = "select distinct "+ ", ".join(main_fields+species_fields) + " from tbl_refMain as main "
+    query = "select  "+ ", ".join(main_fields+species_fields) + " from tbl_refMain as main "
     query += "inner join tbl_species as species on main.map_org=species.tax_id "
     query += "where (species.build = \""+build+"\") and "
     query += query_pos+" order by "+cmp_to+ord+" LIMIT "+str(flank_limit)
