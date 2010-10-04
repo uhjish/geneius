@@ -120,10 +120,14 @@ class SimpleGeneius:
         return res_mat
     def get_gene_protein_lookup_table( self, org ):
         return get_gene_protein_lookup_table( org, self.geneius_db )
+    def get_refseq_uniprot_lookup_table( self, org ):
+        return get_refseq_uniprot_lookup_table( org, self.geneius_db )
     def get_symbols_for_refseqs( self, org ):
         return get_symbols_for_refseqs( org, self.geneius_db )
     def get_symbols_for_entrez(self, org = ""):
         return get_symbols_for_entrez(self.geneius_db, org)
+    def get_synonyms_for_official_symbols(self, org = ""):
+        return get_synonyms_for_official_symbols(self.geneius_db, org)
     def get_symbol_for_refseq( self, refseq, org ):
         return get_symbol_for_refseq( refseq, org, self.geneius_db )
     def get_symbols_for_refseqs_genomic( self, org ):

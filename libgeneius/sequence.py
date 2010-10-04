@@ -1,18 +1,20 @@
 import codons
 import sys
 from error import GeneiusError
+import string
 try:
     import seq.twobit
 except Exception, pe:
     raise GeneiusError(str(pe))
 
+def complement(s):
+    complement = {'A':'T', 'T':'A', 'C':'G', 'G':'C', 'a':'t', 't':'a', 'c':'g', 'g':'c', 'N':'N', 'n':'n' }
+    compl_s = [complement[base] for base in s]
+    return compl_s
+
 def reverse_complement( s ):
-    complement_dna = {"A":"T", "T":"A", "C":"G", "G":"C", "a":"t", "t":"a", "c":"g", "g":"c", "N":"N", "n":"n" }
-    reversed_s = []
-    for i in s:
-        reversed_s.append( complement_dna[i] )
-    reversed_s.reverse()
-    return "".join( reversed_s )
+    rcomp=s.translate(string.maketrans("ATCGNatcgn", "TAGCNtagcn"))[::-1]
+    return rcomp
 
 def open_twobit(genome):
     try:

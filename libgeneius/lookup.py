@@ -160,6 +160,26 @@ def get_gene_protein_lookup_table( org, geneius_db ):
 
     return ref_map
 
+def get_refseq_uniprot_lookup_table( org, geneius_db ):
+    '''
+    Get a dict of refseq gene to uniprot protein mappings for the given organism 
+    @param symbols a list of refseq id's
+    @param geneius_db mysql wrapper for genenius
+    '''
+
+    query =  " select gref.refseq_rna, uniprot.uniprot from tbl_gene_refseq as gref "
+    query += " left join tbl_uniprot2refseq as uniprot on gref.refseq_protein = uniprot.refseq_protein "
+    query += " left join tbl_entrez_xref as entrez on gref.entrez_id = entrez.entrez_id "
+    query += " left join tbl_species as species on species.tax_id = entrez.species "
+    query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") ; "
+
+    ref_map = {}
+
+    for entry in geneius_db.query(query):
+        ref_map[ entry[0] ] = entry[1]
+
+    return ref_map
+
 def get_symbols_for_refseqs( org, geneius_db):
     '''
     Get a dict of refseq gene to refseq protein mappings for the given organism 
@@ -187,6 +207,23 @@ def get_symbols_for_entrez(geneius_db, org = ""):
     '''
 
     query =  " select entrez.entrez_id, entrez.official_symbol from tbl_entrez_xref as entrez "
+    query += " left join tbl_species as species on species.tax_id = entrez.species "
+    query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") ";
+
+    ref_map = {}
+
+    for entry in geneius_db.query(query):
+        ref_map[ entry[0] ] = entry[1]
+    return ref_map
+
+def get_synonyms_for_official_symbols(geneius_db, org = ""):
+    '''
+    Get a dict of refseq gene to refseq protein mappings for the given organism 
+    @param symbols a list of refseq id's
+    @param geneius_db mysql wrapper for genenius
+    '''
+
+    query =  " select entrez.official_symbol, entrez.other_symbols from tbl_entrez_xref as entrez "
     query += " left join tbl_species as species on species.tax_id = entrez.species "
     query += " where (species.name like \"%"+org+"%\" or species.build like \"%"+org+"%\") ";
 
