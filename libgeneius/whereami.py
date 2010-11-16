@@ -202,3 +202,26 @@ def whereami_gene(build,chr,pos,geneius_db):
     for gene in results:
         gene = addcoding(gene)
     return results
+
+def get_genes_in_region(build, chr, start, end , geneius_db):
+
+    main_fields = ["main.refseq_id","entrez.official_symbol","main.chr","main.strand","main.start","main.end"]
+
+    query_pos = "main.chr=\""+chr+"\" and main.start >= "+str(start)+" and main.end <="+str(end)
+
+    query = "select "+", ".join( main_fields) + " from tbl_refMain as main "
+    query += " left join tbl_gene_refseq as xref on xref.refseq_rna = main.refseq_id "
+    query += " left join tbl_entrez_xref as entrez on xref.entrez_id = entrez.entrez_id "
+    query += " left join tbl_species as species on species.tax_id=main.map_org ";
+    query += " where (species.build = \""+build+"\") and "
+    query += " %s order by main.chr, main.start;" % query_pos
+
+    results=[]
+    for entry in geneius_db.query(query):
+        results.append( { "refseq": entry[0],    
+                "gene": entry[1], 
+                "chr": entry[2],
+                "strand": entry[3],
+                "start": int(entry[4]),
+                "end": int(entry[5]) } )
+    return results

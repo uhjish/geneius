@@ -94,6 +94,9 @@ class SimpleGeneius:
         else:
             dbresults = whereami(organism, chr, pos, self.geneius_db)
         return dbresults
+    def get_genes_in_region(self,organism, chr, start, end):
+        dbresults = get_genes_in_region(organism, chr, start, end, self.geneius_db)
+        return dbresults
     def get_refseq_by_uid(self,uid,sequence=[]):
         dbresults = get_refseq_by_uid(uid, self.geneius_db)
         sequence = map( lambda x: x.lower(), sequence )
@@ -126,6 +129,8 @@ class SimpleGeneius:
         return get_symbols_for_refseqs( org, self.geneius_db )
     def get_symbols_for_entrez(self, org = ""):
         return get_symbols_for_entrez(self.geneius_db, org)
+    def get_descriptions_for_official_symbols(self, org=""):
+        return get_descriptions_for_official_symbols(self.geneius_db, org)
     def get_synonyms_for_official_symbols(self, org = ""):
         return get_synonyms_for_official_symbols(self.geneius_db, org)
     def get_symbol_for_refseq( self, refseq, org ):
