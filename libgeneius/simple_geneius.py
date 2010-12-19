@@ -121,6 +121,19 @@ class SimpleGeneius:
             for mapping in gene["mappings"]:
                 res_mat[mapping["uid"]] = mapping
         return res_mat
+    def get_all_mappings_for_organism_by_refseq(self,org,sequence=[]):
+        dbresults = get_all_mappings_for_organism(org, self.geneius_db)
+        sequence = map( lambda x: x.lower(), sequence )
+        if "dna" in sequence:
+            dbresults = fetch_dna_for_genes(self.genomes_rule, dbresults)
+        if "rna" in sequence:
+            dbresults = fetch_rna_for_genes(self.genomes_rule, dbresults)
+        if "protein" in sequence:
+            dbresults = fetch_protein_for_genes(self.genomes_rule, dbresults)
+        res_mat = {}
+        for gene in dbresults:
+            res_mat["refseq_id"] = gene["mappings"][0]
+        return res_mat
     def get_gene_protein_lookup_table( self, org ):
         return get_gene_protein_lookup_table( org, self.geneius_db )
     def get_refseq_uniprot_lookup_table( self, org ):
