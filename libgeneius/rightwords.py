@@ -1,7 +1,6 @@
 import math
-import scipy.stats 
 from warnings import warn
-
+from stats import *
 from mysql import GeneiusDb
 from search import fetch_annotations_by_symbols
 
@@ -15,7 +14,7 @@ def count_annotations(gene2annos):
     return anno2genes
 
 def get_significance( qct, bct, qsize, bsize):
-    pval = scipy.stats.binom.sf( int(qct), int(qsize), float(bct)/float(bsize) )
+    pval = prob(qct, float(bct)/float(bsize), qsize)
     return pval
 
 def mine_annotations( qs, bs, organism, id_type, geneius_db ):
