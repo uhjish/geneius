@@ -1,16 +1,9 @@
----
-title: Ajish_George-Professional_Profile
-layout: post
-author: ajishg
-permalink: /ajish_george-professional_profile/
-source-id: 1O5I29ReT0tiEbyOpd0NaB1DegItoZvqJq1a-ootDET8
-published: true
----
-** ****Executive Summary**
+
+## Executive Summary
 
 Experienced Engineer, Scientist, and Architect with a background in analytics, back-end/big-data engineering, front-end/mobile development, and devops/cloud architecture.  Comfortable with a variety of domains ranging from cancer genomics and healthcare informatics to ad-tech and social-media mining. Former political pollster. Machine learning expertise in supervised and unsupervised classification, optimization problems, as well as natural language processing. Has worked with and managed teams of engineers, analysts, marketers, and researchers to create novel data products with scalable distributed backend architectures, cutting edge analytic components, and bespoke visualization and management interfaces. Comfortable building distributed systems leveraging Kafka, Cassandra, Mesos, Docker, Kubernetes and the like, developing batch and streaming data pipelines using the latest Hadoop and Spark stacks, or building something shiny with D3, Angular, React, Objective C, or Android. Thrives on deep dives into complex problems that require both creative and analytical thinking, and a knack for research, experimentation, and empirical validation. Ready to take on the next challenge.
 
-**Education, Accreditations **
+## Education, Accreditations
 
 * PhD, Biomedical Sciences (Genomics), SUNY Albany School of Public Health
 
@@ -22,7 +15,7 @@ Experienced Engineer, Scientist, and Architect with a background in analytics, b
 
 * American Statistical Association Graduate Statistician
 
-**Areas of Expertise**
+## Areas of Expertise
 
 * Big Data Administration, Development, Architecture
 
@@ -32,51 +25,43 @@ Experienced Engineer, Scientist, and Architect with a background in analytics, b
 
 * Team and Project Management, Teaching  (Agile, Academic)
 
-**Professional Societies**
+## Professional Societies
 
-<table>
-  <tr>
-    <td>Association for Computing Machinery
-American Association for Advancement of Science
-New York Academy of Science
-American Statistical Association</td>
-    <td>Intll Society for Computational Biology
-System Dynamics Society
-Direct Marketing Association
-</td>
-  </tr>
-</table>
+- Association for Computing Machinery
+- American Association for Advancement of Science
+- New York Academy of Science
+- American Statistical Association
+- Intl Society for Computational Biology
+- System Dynamics Society
+- Direct Marketing Association
 
 
-**Experience and Skills**
+## Experience and Skills
 
-* **Backend:** Python, Scala, Golang, Clojure, Java, Node.js, bash/coreutils, awk/mawk, Ruby, PHP, C/C++, Perl
+- **Backend:** Python, Scala, Golang, Clojure, Java, Node.js, bash/coreutils, awk/mawk, Ruby, PHP, C/C++, Perl
 
-* **Frontend:** JS, CSS, d3.js, Angular, React, Bootstrap, RequireJS, Lodash, Gulp, Bower, Webpack
+- **Frontend:** JS, CSS, d3.js, Angular, React, Bootstrap, RequireJS, Lodash, Gulp, Bower, Webpack
 
-* **Analytics:** R, Pandas, NumPy, SciPy, Scikit-Learn, SparkML, Octave, Weka, Mahout
+- **Analytics:** R, Pandas, NumPy, SciPy, Scikit-Learn, SparkML, Octave, Weka, Mahout
 
-* **SQL:** MySQL, Postgres, Redshift, Hive, SQLite Vertica, Netezza
+- **SQL:** MySQL, Postgres, Redshift, Hive, SQLite Vertica, Netezza
 
-* **NoSQL:** Cassandra, MongoDB, Avro/Parquet, RethinkDB, Elasticsearch, Redis, TitanDB / TinkerPop, Gremlin
+- **NoSQL:** Cassandra, MongoDB, Avro/Parquet, RethinkDB, Elasticsearch, Redis, TitanDB / TinkerPop, Gremlin
 
-* **Cloud:** Heroku; AWS - S3, EC2, EMR, Redshift, SQS, RDS; Google - AppEngine, ComputeEngine, ContainerEnginer, Datastore, Endpoints; CloudAMQP; IronMQ, IronWorker
+- **Cloud:** Heroku; AWS - S3, EC2, EMR, Redshift, SQS, RDS; Google - AppEngine, ComputeEngine, ContainerEnginer, Datastore, Endpoints; CloudAMQP; IronMQ, IronWorker
 
-* **Hadoop:** Spark, Kafka, HBase, Hive, Pig, Hbase, SparkML, Storm, Spark Streaming, Sqoop, Flume, RHadoop, Mahout, PySpark, SparkR, BlinkDB, Cascading (Cascalog, Scalding), Mesos, YARN, MapReduce
+- **Hadoop:** Spark, Kafka, HBase, Hive, Pig, Hbase, SparkML, Storm, Spark Streaming, Sqoop, Flume, RHadoop, Mahout, PySpark, SparkR, BlinkDB, Cascading (Cascalog, Scalding), Mesos, YARN, MapReduce
 
-* **DevOps:** Docker, Nagios, Ganglia, Graphite, StatsD, Chef, Kubernetes, Hortonworks, BDAS/Mesos, Debian/Ubuntu, RedHat/CentOS, OSX, Vagrant
+- **DevOps:** Docker, Nagios, Ganglia, Graphite, StatsD, Chef, Kubernetes, Hortonworks, BDAS/Mesos, Debian/Ubuntu, RedHat/CentOS, OSX, Vagrant
 
-* **Frameworks:** Python / Flask, Falcon, Django, BottlePy; Node / Express, Hapi, Loopback; Ruby / Sinatra, Rails; PHP / yii, Laravel; Scala / Scalatra, Play; Clojure / Compojure, Luminus; Swagger.
+- **Frameworks:** Python / Flask, Falcon, Django, BottlePy; Node / Express, Hapi, Loopback; Ruby / Sinatra, Rails; PHP / yii, Laravel; Scala / Scalatra, Play; Clojure / Compojure, Luminus; Swagger.
 
-* **Mobile:** iOS / ObjectiveC, Android, Ionic, React Native
+- **Mobile:** iOS / ObjectiveC, Android, Ionic, React Native
 
-**Rooted Insights - Baltimore, MD****	****2009**** to ****Present**
-
+### Rooted Insights - Baltimore, MD [2009-Present]
 **Position:**  Mercenary Data Scientist, Immigrant Small Business Owner
-
 **Environment:**	Varied.
-
-**Roles****: **Architect, Engineer (Platform, Big-Data, Front-End, ML), Data Scientist, Team Lead, Advising, DevOps
+**Roles: **Architect, Engineer (Platform, Big-Data, Front-End, ML), Data Scientist, Team Lead, Advising, DevOps
 
 * Architecting analytical solutions from backend to front-end with an emphasis on the stats-end. Clients have included social and mobile startups, green energy firms, international hotel booking concerns, online and mobile advertising technology firms, job recommendation and social good startups, nationally recognized political polling firms, as well as biotechnology companies and academic research institutions. Select recent projects follow.
 
@@ -110,14 +95,10 @@ Direct Marketing Association
 
 * *2012*; Modelled peak energy usage across the grid to optimize charging/discharging of battery sites using R with ARIMA and linear models for a green energy utility startup. [Principal Consulting Data Scientist]
 
-**ActionX, New York, NY****	****2012-2013**
-
+### ActionX, New York, NY [2012-2013]
 **Position:**	Director of Data Science
-
 **Industry:**	Mobile Ad-Tech	
-
 **Roles: **Architect, Engineer (Platform, Big-Data, Front-End, ML), Data Scientist, Team Lead, DevOps
-
 **Environment:**	Heroku, AWS EC2, S3, EMR, Redshift, iron.io, Clojure, CloudAMQP, Python, d3
 
 * Developed distributed backend components to receive customer tracking events from mobile and desktop platforms, creating a **scalable pipeline for high-volume processing and persistence of request **data using Clojure and AMQP; developed **ETL processes** and aggregation workflows using Sqoop, Flume, Cascalog, and EMR as the third technical hire for the brand new mobile-retargeting company.
@@ -134,7 +115,7 @@ Direct Marketing Association
 
  
 
-**Appnexus, New York, NY****	****2012**
+### Appnexus, New York, NY [2012]
 
 **Position:**	Quantitative Engineer, Optimization Product Manager, Principal Data Scientist
 
@@ -156,14 +137,10 @@ Direct Marketing Association
 
 * **Provided analytics consults and support **for R and Pandas to execs, engineers, analysts, quants within Optimization Team and the company in general.
 
-**Proclivity Systems, New York, NY	2011**
-
+### Proclivity Systems, New York, NY [2011]
 **Position:**	Senior Data Scientist
-
 **Industry:**	Ad-Tech
-
 **Roles:**	Data Scientist, Data Engineer, Product Manager, AdOps	
-
 **Environment:**	Java, J2EE, JSP, Spring, Hadoop, Hive, Pig, MapReduce, EmberJS, Python, R, bashreduce, DoubleClick, QlikView.
 
 * Built **product classification and customer targeting profiles** using data from multiple sources using Hadoop Streaming, Pig, and Hive; **developed novel statistical methodology** for customer retargeting valuation.
@@ -174,14 +151,10 @@ Direct Marketing Association
 
 * Worked as **product manager** managing an engineering lead and an offshore outsourced team to productionize the Ad Operations platform (Java/JSP, Ember.js).
 
-**Mt. Sinai School of Medicine, New York, NY****	****2008-2011**
-
+### Mt. Sinai School of Medicine, New York, NY [2008-2011]
 **Position:**	Postdoctoral Fellow
-
 **Industry:**	Biotechnology, Healthcare, Pharma
-
 **Roles:**	Data Scientist, Genome Biologist, Platform Engineer, Front-end Engineer, DevOps 	
-
 **Environment:**	Python, R, Perl, C++, C, Javascript, bash, Java, PHP, MySQL, SQLite 
 
 * Developed new **hardware and software** solutions to **store and process massive datasets produced by high-throughput sequencing** -- hand-built high memory rack nodes with iSilon and Avere storage arrays, backend architecture using LAMP, Python, C/C++, Java, and bespoke Javascript/CSS front-ends. Handled everything from building boxes, to installing in colocation centers, to networking, to devops, to custom cluster scheduling and software development.
@@ -194,14 +167,10 @@ Direct Marketing Association
 
 * Managed **international and internal collaborations** with labs using exome sequencing for SNP discovery in rare inherited diseases, mRNA-seq and small RNA-seq for expression analysis of various cancers, and whole genome sequencing for genome assembly in novel model organisms such as bats and lamprey.
 
-**SUNY Albany, NYSDOH, Yale SOM, HocusLocus****	****2004-2009**
-
+### SUNY Albany, NYSDOH, Yale SOM, HocusLocus [2004-2009]
 **Position:**	Doctoral Student
-
 **Industry:**	Health Care, Biotechnology
-
 **Roles:**	Data Scientist, Genome Biologist, Full-Stack Developer, DevOps/SysAdmin	
-
 **Environment:**	R, Java, Perl, GWT, Swing, Colt, Jung, C, MySQL, NFS
 
 * **Thesis work:** Locus Based Approaches to Functional Annotation Mining in High-Throughput Genomics Data.
@@ -216,7 +185,7 @@ Direct Marketing Association
 
 * Led **collaborations with various labs** for the ENCODE Analysis Working Group (UCSC, CSHL, Broad, EBI, Berkeley, others) ribonomics profiling (RIP-Seq, RIP-Chip) effort and helped build shared tools and infrastructure for making data and analysis results publicly available.
 
-**Patents**
+## Patents
 
 1. George AD, Tenenbaum SA, Zaleski C, and Doyle F. Trans-acting RNA switches. US8841438 B2, issued 
 
@@ -242,7 +211,7 @@ Nucleotide Loci of Multiple Data Sets. Patent Application # 60/917,156 (Pending 
 
 Nucleotide Loci. Provisional Patent Application # 60/917,155 (Pending license to HocusLocus, LLC, Rensselaer, NY) 2007.
 
-**Publications**
+## Publications
 
 1. Sosa MS, Parikh D, **George AD**, Alexandre GM, Estrada Y, Bosch A, Bragado P, Ekpin E, et al. NR2F1 Controls 
 
