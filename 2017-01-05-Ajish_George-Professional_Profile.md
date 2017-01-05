@@ -1,13 +1,18 @@
 
 ## Executive Summary
-
+	
+~~~~
 Experienced Engineer, Scientist, and Architect with a background in analytics, back-end/big-data engineering, front-end/mobile development, and devops/cloud architecture.  Comfortable with a variety of domains ranging from cancer genomics and healthcare informatics to ad-tech and social-media mining. Former political pollster. Machine learning expertise in supervised and unsupervised classification, optimization problems, as well as natural language processing. Has worked with and managed teams of engineers, analysts, marketers, and researchers to create novel data products with scalable distributed backend architectures, cutting edge analytic components, and bespoke visualization and management interfaces. Comfortable building distributed systems leveraging Kafka, Cassandra, Mesos, Docker, Kubernetes and the like, developing batch and streaming data pipelines using the latest Hadoop and Spark stacks, or building something shiny with D3, Angular, React, Objective C, or Android. Thrives on deep dives into complex problems that require both creative and analytical thinking, and a knack for research, experimentation, and empirical validation. Ready to take on the next challenge.
 
-## Education, Accreditations
+~~~~
+
+## Education
 
 * PhD, Biomedical Sciences (Genomics), SUNY Albany School of Public Health
 
 * BS, Biology (Bioinformatics), Rensselaer Polytechnic Institute
+
+### Accreditations
 
 * Hortonworks HDP Certified Administrator
 
@@ -25,7 +30,7 @@ Experienced Engineer, Scientist, and Architect with a background in analytics, b
 
 * Team and Project Management, Teaching  (Agile, Academic)
 
-## Professional Societies
+### Professional Societies
 
 - Association for Computing Machinery
 - American Association for Advancement of Science
