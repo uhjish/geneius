@@ -28,7 +28,7 @@
 
 * Team and Project Management, Teaching  (Agile, Academic)
 
-### Professional Societies
+## Professional Societies
 
 - Association for Computing Machinery
 - American Association for Advancement of Science
