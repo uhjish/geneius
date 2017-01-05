@@ -62,11 +62,11 @@
 - **Mobile:** iOS / ObjectiveC, Android, Ionic, React Native
 
 ### Rooted Insights - Baltimore, MD [2009-Present]
-> > **Position:**  Mercenary Data Scientist, Immigrant Small Business Owner
-> >
-> > **Environment:**	Varied.
-> >
-> > **Roles: **Architect, Engineer (Platform, Big-Data, Front-End, ML), Data Scientist, Team Lead, Advising, DevOps
+> **Position:**  Mercenary Data Scientist, Immigrant Small Business Owner
+>
+> **Environment:**	Varied.
+>
+> **Roles:** Architect, Engineer (Platform, Big-Data, Front-End, ML), Data Scientist, Team Lead, Advising, DevOps
 
 * Architecting analytical solutions from backend to front-end with an emphasis on the stats-end. Clients have included social and mobile startups, green energy firms, international hotel booking concerns, online and mobile advertising technology firms, job recommendation and social good startups, nationally recognized political polling firms, as well as biotechnology companies and academic research institutions. Select recent projects follow.
 
@@ -101,13 +101,13 @@
 * *2012*; Modelled peak energy usage across the grid to optimize charging/discharging of battery sites using R with ARIMA and linear models for a green energy utility startup. [Principal Consulting Data Scientist]
 
 ### ActionX, New York, NY [2012-2013]
-> > **Position:**	Director of Data Science
-> > 
-> > **Industry:**	Mobile Ad-Tech	
-> > 
-> > **Roles: **Architect, Engineer (Platform, Big-Data, Front-End, ML), Data Scientist, Team Lead, DevOps
-> > 
-> > **Environment:**	Heroku, AWS EC2, S3, EMR, Redshift, iron.io, Clojure, CloudAMQP, Python, d3
+> **Position:**	Director of Data Science
+> 
+> **Industry:**	Mobile Ad-Tech	
+> 
+> **Roles:** Architect, Engineer (Platform, Big-Data, Front-End, ML), Data Scientist, Team Lead, DevOps
+> 
+> **Environment:** Heroku, AWS EC2, S3, EMR, Redshift, iron.io, Clojure, CloudAMQP, Python, d3
 
 * Developed distributed backend components to receive customer tracking events from mobile and desktop platforms, creating a **scalable pipeline for high-volume processing and persistence of request **data using Clojure and AMQP; developed **ETL processes** and aggregation workflows using Sqoop, Flume, Cascalog, and EMR as the third technical hire for the brand new mobile-retargeting company.
 
@@ -124,13 +124,13 @@
  
 
 ### Appnexus, New York, NY [2012]
-> > **Position:**	Quantitative Engineer, Optimization Product Manager, Principal Data Scientist
-> > 
-> > **Industry:**	Ad-Tech	
-> > 
-> > **Roles****:**	Quant/Analytics Scientist, Platform Engineer, Product Manager, DevOps, Team Lead
-> > 
-> > **Environment:**	Netezza, Vertica, MySQL, Python, Pandas, iPython Notebooks, R, RabbitMQ, Hadoop, HBase, Flask, d3, Tableau
+> **Position:**	Quantitative Engineer, Optimization Product Manager, Principal Data Scientist
+> 
+> **Industry:**	Ad-Tech	
+> 
+> **Roles:** Quant/Analytics Scientist, Platform Engineer, Product Manager, DevOps, Team Lead
+> 
+> **Environment:**	Netezza, Vertica, MySQL, Python, Pandas, iPython Notebooks, R, RabbitMQ, Hadoop, HBase, Flask, d3, Tableau
 
 * Led, **managed, built POCs, and managed deployments** for an engineering team effort to transition the Appnexus Optimization backend from Python/MySQL to HBase/Hadoop using Agile/Scrum methodology..
 
@@ -145,13 +145,13 @@
 * **Provided analytics consults and support **for R and Pandas to execs, engineers, analysts, quants within Optimization Team and the company in general.
 
 ### Proclivity Systems, New York, NY [2011]
-> > **Position:**	Senior Data Scientist
-> > 
-> > **Industry:**	Ad-Tech
-> > 
-> > **Roles:**	Data Scientist, Data Engineer, Product Manager, AdOps	
-> > 
-> > **Environment:**	Java, J2EE, JSP, Spring, Hadoop, Hive, Pig, MapReduce, EmberJS, Python, R, bashreduce, DoubleClick, QlikView.
+> **Position:**	Senior Data Scientist
+> 
+> **Industry:**	Ad-Tech
+> 
+> **Roles:**	Data Scientist, Data Engineer, Product Manager, AdOps	
+> 
+> **Environment:**	Java, J2EE, JSP, Spring, Hadoop, Hive, Pig, MapReduce, EmberJS, Python, R, bashreduce, DoubleClick, QlikView.
 
 * Built **product classification and customer targeting profiles** using data from multiple sources using Hadoop Streaming, Pig, and Hive; **developed novel statistical methodology** for customer retargeting valuation.
 
@@ -162,13 +162,13 @@
 * Worked as **product manager** managing an engineering lead and an offshore outsourced team to productionize the Ad Operations platform (Java/JSP, Ember.js).
 
 ### Mt. Sinai School of Medicine, New York, NY [2008-2011]
-> > **Position:**	Postdoctoral Fellow
-> > 
-> > **Industry:**	Biotechnology, Healthcare, Pharma
-> > 
-> > **Roles:**	Data Scientist, Genome Biologist, Platform Engineer, Front-end Engineer, DevOps 	
-> > 
-> > **Environment:**	Python, R, Perl, C++, C, Javascript, bash, Java, PHP, MySQL, SQLite 
+> **Position:**	Postdoctoral Fellow
+> 
+> **Industry:**	Biotechnology, Healthcare, Pharma
+> 
+> **Roles:**	Data Scientist, Genome Biologist, Platform Engineer, Front-end Engineer, DevOps 	
+> 
+> **Environment:** Python, R, Perl, C++, C, Javascript, bash, Java, PHP, MySQL, SQLite 
 
 * Developed new **hardware and software** solutions to **store and process massive datasets produced by high-throughput sequencing** -- hand-built high memory rack nodes with iSilon and Avere storage arrays, backend architecture using LAMP, Python, C/C++, Java, and bespoke Javascript/CSS front-ends. Handled everything from building boxes, to installing in colocation centers, to networking, to devops, to custom cluster scheduling and software development.
 
@@ -181,15 +181,15 @@
 * Managed **international and internal collaborations** with labs using exome sequencing for SNP discovery in rare inherited diseases, mRNA-seq and small RNA-seq for expression analysis of various cancers, and whole genome sequencing for genome assembly in novel model organisms such as bats and lamprey.
 
 ### SUNY Albany, NYSDOH, Yale SOM, HocusLocus [2004-2009]
-> > **Position:**	Doctoral Student
-> > 
-> > **Industry:**	Health Care, Biotechnology
-> > 
-> > **Roles:**	Data Scientist, Genome Biologist, Full-Stack Developer, DevOps/SysAdmin	
-> > 
-> > **Environment:**	R, Java, Perl, GWT, Swing, Colt, Jung, C, MySQL, NFS
-
-* **Thesis work:** Locus Based Approaches to Functional Annotation Mining in High-Throughput Genomics Data.
+> **Position:**	Doctoral Student
+> 
+> **Industry:**	Health Care, Biotechnology
+> 
+> **Roles:**	Data Scientist, Genome Biologist, Full-Stack Developer, DevOps/SysAdmin	
+> 
+> **Environment:**	R, Java, Perl, GWT, Swing, Colt, Jung, C, MySQL, NFS
+> 
+> **Thesis work:** Locus Based Approaches to Functional Annotation Mining in High-Throughput Genomics Data.
 
 * Used genomic loci as a standard to **merge heterogeneous data** from gene-expression, protein interaction, miRNA, ontology, disease, and other functional genomics data to facilitate mining of functional annotation enrichment and functional interaction networks. Built a Java library for fast locus intersections and functional annotation mining over experimental data and homogenized public datasets accessible to scientists as a Java RMI client-server app with a Swing GUI and GWT webapp. Used the tools to develop a novel miRNA-mRNA interaction based strategy to create a switchable on-off system for target mRNAs and **co-founded ****HocusLocus** to commercialize this. **University spinout** has to-date **raised over 5 MM** in public and private funding.
 
